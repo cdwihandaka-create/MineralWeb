@@ -1,477 +1,417 @@
 /* ==========================================================
-GOOGLE FONT
-========================================================== */
+   GOOGLE FONT
+   ========================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lexend:wght@600;700;800&display=swap');
 
 /* ==========================================================
-GENERAL
-========================================================== */
+   DESIGN TOKENS
+   ========================================================== */
+
+:root{
+    --brand-900:#0F2A5E;
+    --brand-700:#1D4ED8;
+    --brand-600:#2563EB;
+    --brand-500:#3B82F6;
+    --brand-100:#DBEAFE;
+
+    --accent-600:#B45309;
+    --accent-500:#D97706;
+    --accent-100:#FEF3C7;
+
+    --ink-900:#0F172A;
+    --ink-700:#1E293B;
+    --ink-500:#475569;
+    --ink-400:#64748B;
+
+    --line:#E5E7EB;
+    --surface:#FFFFFF;
+    --bg:#F4F7FB;
+
+    --radius-sm:10px;
+    --radius-md:16px;
+    --radius-lg:22px;
+    --radius-xl:26px;
+
+    --shadow-sm:0 4px 12px rgba(15,23,42,.05);
+    --shadow-md:0 12px 28px rgba(15,23,42,.07);
+    --shadow-lg:0 20px 45px rgba(15,23,42,.10);
+    --shadow-brand:0 18px 40px rgba(37,99,235,.22);
+}
+
+/* ==========================================================
+   GENERAL
+   ========================================================== */
 
 html,
 body,
 [class*="css"]{
-
-    font-family: "Inter", sans-serif;
-
-    background:#F4F7FB;
-
-    color:#1F2937;
-
+    font-family:"Inter", sans-serif;
+    background:var(--bg);
+    color:var(--ink-900);
+    font-feature-settings:"tnum" 1, "cv11" 1;
 }
 
 .block-container{
-
     max-width:1200px;
-
     padding-top:2rem;
-
     padding-bottom:3rem;
-
-    animation:fadeUp .7s ease;
-
+    animation:fadeUp .7s cubic-bezier(.22,1,.36,1);
 }
 
 /* ==========================================================
-ANIMATION
-========================================================== */
+   ANIMATION
+   ========================================================== */
 
 @keyframes fadeUp{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(25px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
+    from{ opacity:0; transform:translateY(22px); }
+    to{ opacity:1; transform:translateY(0); }
 }
 
-*{
+@keyframes pulseGlow{
+    0%,100%{ box-shadow:var(--shadow-brand); }
+    50%{ box-shadow:0 22px 55px rgba(37,99,235,.32); }
+}
 
-    transition:.25s ease;
-
+/* Scoped transitions only where needed — avoids sluggish global transitions */
+button, .stButton>button, .stDownloadButton>button,
+[data-testid="metric-container"], .upload-container,
+[data-testid="stFileUploaderDropzone"], img, .use-card{
+    transition:transform .22s ease, box-shadow .22s ease, background-color .22s ease, border-color .22s ease;
 }
 
 /* ==========================================================
-HEADER
-========================================================== */
+   HEADER
+   ========================================================== */
 
 .main-title{
-
     text-align:center;
-
-    font-size:46px;
-
+    font-family:"Lexend","Inter",sans-serif;
+    font-size:44px;
     font-weight:800;
-
-    color:#1E293B;
-
+    color:var(--ink-700);
     letter-spacing:-1px;
-
     margin-bottom:8px;
-
+    background:linear-gradient(135deg, var(--brand-900), var(--brand-600) 60%, var(--accent-500));
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
 .sub-title{
-
     text-align:center;
-
-    color:#64748B;
-
-    font-size:18px;
-
+    color:var(--ink-400);
+    font-size:17px;
     line-height:1.8;
-
-    margin-bottom:40px;
-
+    max-width:640px;
+    margin:0 auto 40px;
 }
 
 /* ==========================================================
-SECTION TITLE
-========================================================== */
+   SECTION TITLE
+   ========================================================== */
 
 .section-title{
-
-    font-size:28px;
-
+    font-family:"Lexend","Inter",sans-serif;
+    font-size:26px;
     font-weight:700;
-
-    color:#1E293B;
-
+    color:var(--ink-700);
     margin-bottom:10px;
+    position:relative;
+    padding-left:14px;
+}
 
+.section-title::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:4px;
+    bottom:4px;
+    width:5px;
+    border-radius:4px;
+    background:linear-gradient(180deg, var(--brand-600), var(--accent-500));
 }
 
 .upload-text{
-
     text-align:center;
-
-    color:#64748B;
-
+    color:var(--ink-400);
     font-size:15px;
-
     margin-bottom:20px;
-
 }
 
 /* ==========================================================
-METRIC CARD
-========================================================== */
+   METRIC CARD
+   ========================================================== */
 
 [data-testid="metric-container"]{
-
-    background:#FFFFFF;
-
-    border:1px solid #E5E7EB;
-
-    border-radius:18px;
-
-    padding:18px;
-
-    box-shadow:0 8px 25px rgba(0,0,0,.05);
-
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:18px 20px;
+    box-shadow:var(--shadow-sm);
 }
 
 [data-testid="metric-container"]:hover{
-
     transform:translateY(-5px);
+    border-color:var(--brand-600);
+    box-shadow:var(--shadow-md);
+}
 
-    border-color:#2563EB;
-
-    box-shadow:0 18px 35px rgba(37,99,235,.15);
-
+[data-testid="stMetricValue"]{
+    color:var(--brand-700);
+    font-weight:700;
 }
 
 /* ==========================================================
-UPLOAD AREA
-========================================================== */
+   UPLOAD AREA
+   ========================================================== */
 
 .upload-container{
-
-    background:white;
-
+    background:var(--surface);
     border:2px dashed #CBD5E1;
-
-    border-radius:22px;
-
-    padding:20px;
-
+    border-radius:var(--radius-xl);
+    padding:22px;
     margin-bottom:25px;
-
+    box-shadow:var(--shadow-sm);
 }
 
 .upload-container:hover{
-
-    border-color:#2563EB;
-
-    box-shadow:0 15px 35px rgba(37,99,235,.15);
-
+    border-color:var(--brand-600);
+    box-shadow:var(--shadow-md);
     transform:translateY(-2px);
-
 }
 
 [data-testid="stFileUploader"]{
-
     border:none;
-
     background:transparent;
-
 }
 
 [data-testid="stFileUploaderDropzone"]{
-
     border:2px dashed #CBD5E1 !important;
-
-    border-radius:20px;
-
+    border-radius:var(--radius-lg);
     background:#FAFBFC;
-
     padding:45px;
-
 }
 
 [data-testid="stFileUploaderDropzone"]:hover{
-
-    border-color:#2563EB !important;
-
+    border-color:var(--brand-600) !important;
     background:#F8FBFF;
-
 }
 
 /* ==========================================================
-BUTTON
-========================================================== */
+   BUTTON
+   ========================================================== */
 
 .stButton>button,
 .stDownloadButton>button{
-
-    border-radius:12px;
-
+    border-radius:var(--radius-sm);
     border:none;
-
-    background:#2563EB;
-
+    background:var(--brand-600);
     color:white;
-
     font-weight:600;
-
-    padding:12px 18px;
-
+    letter-spacing:.2px;
+    padding:12px 20px;
+    box-shadow:0 8px 18px rgba(37,99,235,.20);
 }
 
 .stButton>button:hover,
 .stDownloadButton>button:hover{
-
-    background:#1D4ED8;
-
+    background:var(--brand-700);
     transform:translateY(-2px);
+    box-shadow:0 12px 24px rgba(37,99,235,.28);
+}
 
+.stButton>button:active,
+.stDownloadButton>button:active{
+    transform:translateY(0);
 }
 
 /* ==========================================================
-IMAGE
-========================================================== */
+   IMAGE
+   ========================================================== */
 
 img{
-
-    border-radius:18px;
-
-}
-
-/* ==========================================================
-PROGRESS
-========================================================== */
-
-.stProgress>div>div>div{
-
-    background:#2563EB;
-
-}
-
-/* ==========================================================
-DATAFRAME
-========================================================== */
-
-[data-testid="stDataFrame"]{
-
-    border-radius:15px;
-
-    overflow:hidden;
-
-}
-
-/* ==========================================================
-DIVIDER
-========================================================== */
-
-hr{
-
-    border:none;
-
-    border-top:1px solid #E5E7EB;
-
-    margin:30px 0;
-
-}
-
-/* ==========================================================
-FOOTER
-========================================================== */
-
-.footer{
-
-    text-align:center;
-
-    color:#94A3B8;
-
-    font-size:14px;
-
-    margin-top:40px;
-
-}
-
-/* ==========================================================
-PREDICTION CARD
-========================================================== */
-
-.prediction-card{
-
-    background:linear-gradient(
-        135deg,
-        #2563EB,
-        #3B82F6
-    );
-
-    color:white;
-
-    border-radius:24px;
-
-    padding:35px;
-
-    box-shadow:0 18px 40px rgba(37,99,235,.20);
-
-}
-
-.prediction-card h2{
-
-    font-size:42px;
-
-    margin-bottom:10px;
-
-    font-weight:700;
-
-}
-
-.prediction-card p{
-
-    margin:0;
-
-    opacity:.9;
-
-    font-size:16px;
-
-}
-
-/* ==========================================================
-STATUS CARD
-========================================================== */
-
-.status-card{
-
-    background:white;
-
-    border-radius:18px;
-
-    text-align:center;
-
-    padding:15px;
-
-    margin-top:15px;
-
-    border:1px solid #E5E7EB;
-
-    box-shadow:0 10px 20px rgba(0,0,0,.05);
-
-    font-weight:600;
-
-    color:#2563EB;
-
-}
-
-/* ==========================================================
-INFO CARD
-========================================================== */
-
-.info-card{
-
-    background:white;
-
-    border-radius:20px;
-
-    padding:25px;
-
-    box-shadow:0 8px 20px rgba(0,0,0,.05);
-
-    border:1px solid #E5E7EB;
-
-    height:100%;
-
-}
-
-.info-card h3{
-
-    margin-top:0;
-
-    margin-bottom:20px;
-
-    color:#2563EB;
-
-}
-
-/* ==========================================================
-DESCRIPTION
-========================================================== */
-
-.description-card{
-
-    background:white;
-
-    border-radius:20px;
-
-    padding:25px;
-
-    line-height:1.9;
-
-    border:1px solid #E5E7EB;
-
-    box-shadow:0 8px 20px rgba(0,0,0,.05);
-
-}
-
-/* ==========================================================
-USES
-========================================================== */
-
-.use-card{
-
-    background:#2563EB;
-
-    color:white;
-
-    border-radius:14px;
-
-    text-align:center;
-
-    padding:18px;
-
-    font-weight:600;
-
-    box-shadow:0 8px 20px rgba(37,99,235,.18);
-
-}
-
-.use-card:hover{
-
-    transform:translateY(-4px);
-
-    background:#1D4ED8;
-
-}
-
-/* ==========================================================
-IMAGE HOVER
-========================================================== */
-
-img{
-
-    transition:.35s;
-
+    border-radius:var(--radius-lg);
 }
 
 img:hover{
-
-    transform:scale(1.02);
-
+    transform:scale(1.015);
 }
 
 /* ==========================================================
-DATAFRAME
-========================================================== */
+   PROGRESS
+   ========================================================== */
+
+.stProgress>div>div>div{
+    background:linear-gradient(90deg, var(--brand-600), var(--accent-500));
+    border-radius:8px;
+}
+
+/* ==========================================================
+   DATAFRAME
+   ========================================================== */
 
 [data-testid="stDataFrame"]{
+    border-radius:var(--radius-md);
+    border:1px solid var(--line);
+    overflow:hidden;
+    box-shadow:var(--shadow-sm);
+}
 
-    border-radius:18px;
+/* ==========================================================
+   DIVIDER
+   ========================================================== */
 
-    border:1px solid #E5E7EB;
+hr{
+    border:none;
+    border-top:1px solid var(--line);
+    margin:32px 0;
+}
 
+/* ==========================================================
+   FOOTER
+   ========================================================== */
+
+.footer{
+    text-align:center;
+    color:#94A3B8;
+    font-size:13px;
+    margin-top:40px;
+    letter-spacing:.2px;
+}
+
+/* ==========================================================
+   PREDICTION CARD
+   ========================================================== */
+
+.prediction-card{
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(135deg, var(--brand-900), var(--brand-600) 55%, var(--brand-500));
+    color:white;
+    border-radius:var(--radius-xl);
+    padding:36px 38px;
+    box-shadow:var(--shadow-brand);
+    animation:pulseGlow 4s ease-in-out infinite;
+}
+
+.prediction-card::after{
+    content:"";
+    position:absolute;
+    top:-40%;
+    right:-15%;
+    width:260px;
+    height:260px;
+    background:radial-gradient(circle, rgba(217,119,6,.35), transparent 70%);
+    pointer-events:none;
+}
+
+.prediction-card h2{
+    font-family:"Lexend","Inter",sans-serif;
+    font-size:40px;
+    margin-bottom:8px;
+    font-weight:700;
+    text-transform:capitalize;
+}
+
+.prediction-card p{
+    margin:0;
+    opacity:.92;
+    font-size:16px;
+}
+
+.prediction-card .confidence-badge{
+    display:inline-block;
+    margin-top:14px;
+    padding:6px 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,.16);
+    backdrop-filter:blur(4px);
+    font-size:14px;
+    font-weight:600;
+}
+
+/* ==========================================================
+   STATUS CARD
+   ========================================================== */
+
+.status-card{
+    background:var(--surface);
+    border-radius:var(--radius-lg);
+    text-align:center;
+    padding:16px;
+    margin-top:15px;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-sm);
+    font-weight:600;
+    color:var(--brand-600);
+}
+
+/* ==========================================================
+   INFO CARD
+   ========================================================== */
+
+.info-card{
+    background:var(--surface);
+    border-radius:var(--radius-lg);
+    padding:26px;
+    box-shadow:var(--shadow-sm);
+    border:1px solid var(--line);
+    height:100%;
+}
+
+.info-card:hover{
+    box-shadow:var(--shadow-md);
+    transform:translateY(-3px);
+}
+
+.info-card h3{
+    margin-top:0;
+    margin-bottom:18px;
+    color:var(--brand-600);
+    font-family:"Lexend","Inter",sans-serif;
+}
+
+/* ==========================================================
+   DESCRIPTION
+   ========================================================== */
+
+.description-card{
+    background:var(--surface);
+    border-radius:var(--radius-lg);
+    padding:26px;
+    line-height:1.9;
+    color:var(--ink-500);
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-sm);
+}
+
+/* ==========================================================
+   USES
+   ========================================================== */
+
+.use-card{
+    background:var(--brand-600);
+    color:white;
+    border-radius:var(--radius-md);
+    text-align:center;
+    padding:18px;
+    font-weight:600;
+    box-shadow:0 10px 22px rgba(37,99,235,.20);
+}
+
+.use-card:hover{
+    transform:translateY(-4px);
+    background:var(--brand-700);
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 768px){
+    .main-title{ font-size:32px; }
+    .sub-title{ font-size:15px; padding:0 10px; }
+    .prediction-card h2{ font-size:30px; }
+    .prediction-card{ padding:26px; }
 }
