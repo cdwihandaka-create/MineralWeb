@@ -1,11 +1,12 @@
-/* =========================================================
+/* ==========================================================
 GENERAL
-========================================================= */
+========================================================== */
 
 html,
 body,
 [class*="css"]{
-    font-family: "Segoe UI", sans-serif;
+    font-family:"Segoe UI",sans-serif;
+    background:#f5f7fb;
 }
 
 .block-container{
@@ -14,193 +15,228 @@ body,
     padding-bottom:3rem;
 }
 
-/* =========================================================
+/* ==========================================================
 HEADER
-========================================================= */
+========================================================== */
 
 .main-title{
     text-align:center;
     font-size:42px;
     font-weight:700;
     color:#1f2937;
-    margin-bottom:10px;
+    margin-bottom:8px;
 }
 
 .sub-title{
     text-align:center;
     color:#6b7280;
     font-size:18px;
-    margin-bottom:40px;
+    margin-bottom:35px;
+    line-height:1.6;
 }
 
-/* =========================================================
-UPLOAD BOX
-========================================================= */
+.section-title{
+    font-size:28px;
+    font-weight:700;
+    color:#1f2937;
+    margin-top:20px;
+    margin-bottom:20px;
+}
 
-.upload-box{
+/* ==========================================================
+UPLOAD AREA
+========================================================== */
+
+.upload-text{
     text-align:center;
-
-    border:2px dashed #CBD5E1;
-
-    border-radius:18px;
-
-    padding:70px;
-
-    background:#F8FAFC;
-
-    color:#475569;
+    color:#64748b;
+    margin-bottom:12px;
+    font-size:15px;
 }
 
-/* =========================================================
+[data-testid="stFileUploader"]{
+    border:2px dashed #cbd5e1;
+    border-radius:18px;
+    padding:30px;
+    background:#f8fafc;
+    transition:0.25s;
+}
+
+[data-testid="stFileUploader"]:hover{
+    border-color:#2563eb;
+    background:#eef5ff;
+}
+
+[data-testid="stFileUploader"] small{
+    display:none;
+}
+
+/* ==========================================================
 PREDICTION CARD
-========================================================= */
+========================================================== */
 
 .prediction-card{
-
     background:white;
-
     border-radius:18px;
-
-    padding:25px;
-
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-
-    border-left:6px solid #2563EB;
-
+    padding:28px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    border-left:6px solid #2563eb;
 }
 
 .prediction-card h2{
-
     margin:0;
-
+    color:#2563eb;
     font-size:34px;
-
-    color:#2563EB;
-
 }
 
 .prediction-card p{
-
-    margin-top:5px;
-
-    color:#6b7280;
-
+    color:#64748b;
+    margin-top:8px;
 }
 
-/* =========================================================
-SECTION TITLE
-========================================================= */
-
-h2,h3{
-
-    color:#1E293B;
-
+.prediction-card hr{
+    margin:18px 0;
+    border:none;
+    border-top:1px solid #e5e7eb;
 }
 
-/* =========================================================
+/* ==========================================================
+STATUS CARD
+========================================================== */
+
+.status-card{
+    margin-top:15px;
+    background:#eef5ff;
+    color:#1d4ed8;
+    text-align:center;
+    padding:12px;
+    border-radius:12px;
+    font-weight:600;
+}
+
+/* ==========================================================
+INFO CARD
+========================================================== */
+
+.info-card{
+    background:white;
+    padding:22px;
+    border-radius:16px;
+    box-shadow:0 8px 20px rgba(0,0,0,.06);
+    height:100%;
+}
+
+.info-card h3{
+    margin-top:0;
+    color:#2563eb;
+}
+
+/* ==========================================================
+DESCRIPTION CARD
+========================================================== */
+
+.description-card{
+    background:white;
+    padding:22px;
+    border-radius:16px;
+    box-shadow:0 8px 20px rgba(0,0,0,.06);
+    line-height:1.8;
+    color:#374151;
+}
+
+/* ==========================================================
+USE CARD
+========================================================== */
+
+.use-card{
+    background:#2563eb;
+    color:white;
+    text-align:center;
+    border-radius:12px;
+    padding:18px;
+    font-weight:600;
+    box-shadow:0 5px 15px rgba(37,99,235,.25);
+}
+
+/* ==========================================================
 METRIC
-========================================================= */
+========================================================== */
 
 [data-testid="metric-container"]{
-
     background:white;
-
     border-radius:15px;
-
-    box-shadow:0 6px 18px rgba(0,0,0,.08);
-
-    padding:15px;
-
+    padding:18px;
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
 }
 
-/* =========================================================
+/* ==========================================================
 DATAFRAME
-========================================================= */
+========================================================== */
 
 [data-testid="stDataFrame"]{
-
     border-radius:15px;
-
     overflow:hidden;
-
 }
 
-/* =========================================================
-BUTTON
-========================================================= */
+/* ==========================================================
+DOWNLOAD BUTTON
+========================================================== */
 
 .stDownloadButton>button{
-
     width:100%;
-
-    background:#2563EB;
-
+    background:#2563eb;
     color:white;
-
-    border-radius:10px;
-
     border:none;
-
-    padding:12px;
-
+    border-radius:12px;
+    padding:13px;
     font-size:16px;
-
     font-weight:600;
-
 }
 
 .stDownloadButton>button:hover{
-
-    background:#1D4ED8;
-
+    background:#1d4ed8;
 }
 
-/* =========================================================
-FILE UPLOADER
-========================================================= */
-
-[data-testid="stFileUploader"]{
-
-    border-radius:15px;
-
-}
-
-/* =========================================================
-SUCCESS BOX
-========================================================= */
-
-[data-testid="stAlert"]{
-
-    border-radius:12px;
-
-}
-
-/* =========================================================
-IMAGE
-========================================================= */
+/* ==========================================================
+IMAGES
+========================================================== */
 
 img{
-
     border-radius:15px;
-
 }
 
-/* =========================================================
+/* ==========================================================
 PROGRESS BAR
-========================================================= */
+========================================================== */
 
 .stProgress>div>div>div{
-
-    background:#2563EB;
-
+    background:#2563eb;
 }
 
-/* =========================================================
+/* ==========================================================
+TABLE
+========================================================== */
+
+table{
+    border-radius:12px;
+}
+
+/* ==========================================================
+FOOTER
+========================================================== */
+
+.footer{
+    margin-top:60px;
+    text-align:center;
+    color:#94a3b8;
+    font-size:14px;
+    line-height:1.8;
+}
+
+/* ==========================================================
 SIDEBAR
-========================================================= */
+========================================================== */
 
 section[data-testid="stSidebar"]{
-
     display:none;
-
 }
