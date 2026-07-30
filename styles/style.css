@@ -1,18 +1,52 @@
 /* ==========================================================
+GOOGLE FONT
+========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ==========================================================
 GENERAL
 ========================================================== */
 
 html,
 body,
 [class*="css"]{
-    font-family:"Segoe UI",sans-serif;
-    background:#f5f7fb;
+    font-family: "Inter", sans-serif;
+    background:#F6F8FB;
+    color:#1F2937;
 }
 
 .block-container{
     max-width:1200px;
     padding-top:2rem;
     padding-bottom:3rem;
+    animation:fadeUp .7s ease;
+}
+
+/* ==========================================================
+ANIMATION
+========================================================== */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:translateY(0);
+
+    }
+
+}
+
+*{
+    transition:all .25s ease;
 }
 
 /* ==========================================================
@@ -20,223 +54,87 @@ HEADER
 ========================================================== */
 
 .main-title{
+
     text-align:center;
-    font-size:42px;
+
+    font-size:44px;
+
     font-weight:700;
-    color:#1f2937;
-    margin-bottom:8px;
+
+    color:#1F2937;
+
+    letter-spacing:-1px;
+
+    margin-bottom:10px;
+
 }
 
 .sub-title{
+
     text-align:center;
-    color:#6b7280;
+
+    color:#64748B;
+
     font-size:18px;
+
+    line-height:1.8;
+
     margin-bottom:35px;
-    line-height:1.6;
+
 }
+
+/* ==========================================================
+SECTION TITLE
+========================================================== */
 
 .section-title{
+
     font-size:28px;
+
     font-weight:700;
-    color:#1f2937;
+
+    color:#1F2937;
+
     margin-top:20px;
+
     margin-bottom:20px;
+
 }
 
 /* ==========================================================
-UPLOAD AREA
-========================================================== */
-
-.upload-text{
-    text-align:center;
-    color:#64748b;
-    margin-bottom:12px;
-    font-size:15px;
-}
-
-[data-testid="stFileUploader"]{
-    border:2px dashed #cbd5e1;
-    border-radius:18px;
-    padding:30px;
-    background:#f8fafc;
-    transition:0.25s;
-}
-
-[data-testid="stFileUploader"]:hover{
-    border-color:#2563eb;
-    background:#eef5ff;
-}
-
-[data-testid="stFileUploader"] small{
-    display:none;
-}
-
-/* ==========================================================
-PREDICTION CARD
-========================================================== */
-
-.prediction-card{
-    background:white;
-    border-radius:18px;
-    padding:28px;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
-    border-left:6px solid #2563eb;
-}
-
-.prediction-card h2{
-    margin:0;
-    color:#2563eb;
-    font-size:34px;
-}
-
-.prediction-card p{
-    color:#64748b;
-    margin-top:8px;
-}
-
-.prediction-card hr{
-    margin:18px 0;
-    border:none;
-    border-top:1px solid #e5e7eb;
-}
-
-/* ==========================================================
-STATUS CARD
-========================================================== */
-
-.status-card{
-    margin-top:15px;
-    background:#eef5ff;
-    color:#1d4ed8;
-    text-align:center;
-    padding:12px;
-    border-radius:12px;
-    font-weight:600;
-}
-
-/* ==========================================================
-INFO CARD
-========================================================== */
-
-.info-card{
-    background:white;
-    padding:22px;
-    border-radius:16px;
-    box-shadow:0 8px 20px rgba(0,0,0,.06);
-    height:100%;
-}
-
-.info-card h3{
-    margin-top:0;
-    color:#2563eb;
-}
-
-/* ==========================================================
-DESCRIPTION CARD
-========================================================== */
-
-.description-card{
-    background:white;
-    padding:22px;
-    border-radius:16px;
-    box-shadow:0 8px 20px rgba(0,0,0,.06);
-    line-height:1.8;
-    color:#374151;
-}
-
-/* ==========================================================
-USE CARD
-========================================================== */
-
-.use-card{
-    background:#2563eb;
-    color:white;
-    text-align:center;
-    border-radius:12px;
-    padding:18px;
-    font-weight:600;
-    box-shadow:0 5px 15px rgba(37,99,235,.25);
-}
-
-/* ==========================================================
-METRIC
+METRIC CARD
 ========================================================== */
 
 [data-testid="metric-container"]{
+
     background:white;
-    border-radius:15px;
+
+    border-radius:18px;
+
+    border:1px solid #E5E7EB;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+
     padding:18px;
-    box-shadow:0 8px 18px rgba(0,0,0,.08);
+
+}
+
+[data-testid="metric-container"]:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 18px 35px rgba(37,99,235,.12);
+
 }
 
 /* ==========================================================
-DATAFRAME
+DIVIDER
 ========================================================== */
 
-[data-testid="stDataFrame"]{
-    border-radius:15px;
-    overflow:hidden;
-}
+hr{
 
-/* ==========================================================
-DOWNLOAD BUTTON
-========================================================== */
-
-.stDownloadButton>button{
-    width:100%;
-    background:#2563eb;
-    color:white;
     border:none;
-    border-radius:12px;
-    padding:13px;
-    font-size:16px;
-    font-weight:600;
-}
 
-.stDownloadButton>button:hover{
-    background:#1d4ed8;
-}
+    border-top:1px solid #E5E7EB;
 
-/* ==========================================================
-IMAGES
-========================================================== */
-
-img{
-    border-radius:15px;
-}
-
-/* ==========================================================
-PROGRESS BAR
-========================================================== */
-
-.stProgress>div>div>div{
-    background:#2563eb;
-}
-
-/* ==========================================================
-TABLE
-========================================================== */
-
-table{
-    border-radius:12px;
-}
-
-/* ==========================================================
-FOOTER
-========================================================== */
-
-.footer{
-    margin-top:60px;
-    text-align:center;
-    color:#94a3b8;
-    font-size:14px;
-    line-height:1.8;
-}
-
-/* ==========================================================
-SIDEBAR
-========================================================== */
-
-section[data-testid="stSidebar"]{
-    display:none;
 }
