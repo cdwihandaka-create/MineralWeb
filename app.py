@@ -23,16 +23,11 @@ st.set_page_config(
 # CSS
 # ==========================================================
 
-st.markdown("""
-<style>
-
-.block-container{
-    padding-top:2rem;
-    padding-bottom:2rem;
-}
-
-</style>
-""", unsafe_allow_html=True)
+with open("styles/style.css") as f:
+    st.markdown(
+        f"<style>{f.read()}</style>",
+        unsafe_allow_html=True
+    )
 
 # ==========================================================
 # Header
