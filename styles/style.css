@@ -1,0 +1,131 @@
+/* =======================================================
+   Global
+======================================================= */
+
+.block-container{
+    padding-top:2rem;
+    padding-bottom:2rem;
+    max-width:1200px;
+}
+
+/* Background */
+
+.stApp{
+    background:#F8FAFC;
+}
+
+/* =======================================================
+   Header
+======================================================= */
+
+.main-title{
+
+    font-size:42px;
+
+    font-weight:700;
+
+    color:#0F172A;
+
+    margin-bottom:5px;
+
+}
+
+.sub-title{
+
+    font-size:18px;
+
+    color:#475569;
+
+    margin-bottom:25px;
+
+}
+
+/* =======================================================
+   Card
+======================================================= */
+
+.card{
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:12px;
+
+    border:1px solid #E2E8F0;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+
+    margin-bottom:20px;
+
+}
+
+/* =======================================================
+   Section Title
+======================================================= */
+
+.section-title{
+
+    font-size:22px;
+
+    font-weight:600;
+
+    color:#1E293B;
+
+    margin-bottom:15px;
+
+}
+
+/* =======================================================
+   Prediction
+======================================================= */
+
+.prediction{
+
+    font-size:32px;
+
+    font-weight:700;
+
+    color:#2563EB;
+
+}
+
+.confidence{
+
+    font-size:18px;
+
+    color:#64748B;
+
+}
+
+/* =======================================================
+   Metric
+======================================================= */
+
+.metric-label{
+
+    color:#64748B;
+
+    font-size:15px;
+
+}
+
+.metric-value{
+
+    font-size:22px;
+
+    font-weight:600;
+
+}
+
+/* =======================================================
+   Divider
+======================================================= */
+
+hr{
+
+    margin-top:30px;
+
+    margin-bottom:30px;
+
+}
