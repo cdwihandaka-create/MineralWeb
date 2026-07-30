@@ -2,7 +2,7 @@
 GOOGLE FONT
 ========================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* ==========================================================
 GENERAL
@@ -11,16 +11,25 @@ GENERAL
 html,
 body,
 [class*="css"]{
+
     font-family: "Inter", sans-serif;
-    background:#F6F8FB;
+
+    background:#F4F7FB;
+
     color:#1F2937;
+
 }
 
 .block-container{
+
     max-width:1200px;
+
     padding-top:2rem;
+
     padding-bottom:3rem;
+
     animation:fadeUp .7s ease;
+
 }
 
 /* ==========================================================
@@ -32,13 +41,15 @@ ANIMATION
     from{
 
         opacity:0;
-        transform:translateY(20px);
+
+        transform:translateY(25px);
 
     }
 
     to{
 
         opacity:1;
+
         transform:translateY(0);
 
     }
@@ -46,7 +57,9 @@ ANIMATION
 }
 
 *{
-    transition:all .25s ease;
+
+    transition:.25s ease;
+
 }
 
 /* ==========================================================
@@ -57,15 +70,15 @@ HEADER
 
     text-align:center;
 
-    font-size:44px;
+    font-size:46px;
 
-    font-weight:700;
+    font-weight:800;
 
-    color:#1F2937;
+    color:#1E293B;
 
     letter-spacing:-1px;
 
-    margin-bottom:10px;
+    margin-bottom:8px;
 
 }
 
@@ -79,7 +92,7 @@ HEADER
 
     line-height:1.8;
 
-    margin-bottom:35px;
+    margin-bottom:40px;
 
 }
 
@@ -93,9 +106,19 @@ SECTION TITLE
 
     font-weight:700;
 
-    color:#1F2937;
+    color:#1E293B;
 
-    margin-top:20px;
+    margin-bottom:10px;
+
+}
+
+.upload-text{
+
+    text-align:center;
+
+    color:#64748B;
+
+    font-size:15px;
 
     margin-bottom:20px;
 
@@ -107,23 +130,143 @@ METRIC CARD
 
 [data-testid="metric-container"]{
 
-    background:white;
-
-    border-radius:18px;
+    background:#FFFFFF;
 
     border:1px solid #E5E7EB;
 
-    box-shadow:0 10px 25px rgba(0,0,0,.05);
+    border-radius:18px;
 
     padding:18px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
 
 }
 
 [data-testid="metric-container"]:hover{
 
-    transform:translateY(-4px);
+    transform:translateY(-5px);
 
-    box-shadow:0 18px 35px rgba(37,99,235,.12);
+    border-color:#2563EB;
+
+    box-shadow:0 18px 35px rgba(37,99,235,.15);
+
+}
+
+/* ==========================================================
+UPLOAD AREA
+========================================================== */
+
+.upload-container{
+
+    background:white;
+
+    border:2px dashed #CBD5E1;
+
+    border-radius:22px;
+
+    padding:20px;
+
+    margin-bottom:25px;
+
+}
+
+.upload-container:hover{
+
+    border-color:#2563EB;
+
+    box-shadow:0 15px 35px rgba(37,99,235,.15);
+
+    transform:translateY(-2px);
+
+}
+
+[data-testid="stFileUploader"]{
+
+    border:none;
+
+    background:transparent;
+
+}
+
+[data-testid="stFileUploaderDropzone"]{
+
+    border:2px dashed #CBD5E1 !important;
+
+    border-radius:20px;
+
+    background:#FAFBFC;
+
+    padding:45px;
+
+}
+
+[data-testid="stFileUploaderDropzone"]:hover{
+
+    border-color:#2563EB !important;
+
+    background:#F8FBFF;
+
+}
+
+/* ==========================================================
+BUTTON
+========================================================== */
+
+.stButton>button,
+.stDownloadButton>button{
+
+    border-radius:12px;
+
+    border:none;
+
+    background:#2563EB;
+
+    color:white;
+
+    font-weight:600;
+
+    padding:12px 18px;
+
+}
+
+.stButton>button:hover,
+.stDownloadButton>button:hover{
+
+    background:#1D4ED8;
+
+    transform:translateY(-2px);
+
+}
+
+/* ==========================================================
+IMAGE
+========================================================== */
+
+img{
+
+    border-radius:18px;
+
+}
+
+/* ==========================================================
+PROGRESS
+========================================================== */
+
+.stProgress>div>div>div{
+
+    background:#2563EB;
+
+}
+
+/* ==========================================================
+DATAFRAME
+========================================================== */
+
+[data-testid="stDataFrame"]{
+
+    border-radius:15px;
+
+    overflow:hidden;
 
 }
 
@@ -136,5 +279,199 @@ hr{
     border:none;
 
     border-top:1px solid #E5E7EB;
+
+    margin:30px 0;
+
+}
+
+/* ==========================================================
+FOOTER
+========================================================== */
+
+.footer{
+
+    text-align:center;
+
+    color:#94A3B8;
+
+    font-size:14px;
+
+    margin-top:40px;
+
+}
+
+/* ==========================================================
+PREDICTION CARD
+========================================================== */
+
+.prediction-card{
+
+    background:linear-gradient(
+        135deg,
+        #2563EB,
+        #3B82F6
+    );
+
+    color:white;
+
+    border-radius:24px;
+
+    padding:35px;
+
+    box-shadow:0 18px 40px rgba(37,99,235,.20);
+
+}
+
+.prediction-card h2{
+
+    font-size:42px;
+
+    margin-bottom:10px;
+
+    font-weight:700;
+
+}
+
+.prediction-card p{
+
+    margin:0;
+
+    opacity:.9;
+
+    font-size:16px;
+
+}
+
+/* ==========================================================
+STATUS CARD
+========================================================== */
+
+.status-card{
+
+    background:white;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    padding:15px;
+
+    margin-top:15px;
+
+    border:1px solid #E5E7EB;
+
+    box-shadow:0 10px 20px rgba(0,0,0,.05);
+
+    font-weight:600;
+
+    color:#2563EB;
+
+}
+
+/* ==========================================================
+INFO CARD
+========================================================== */
+
+.info-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+
+    border:1px solid #E5E7EB;
+
+    height:100%;
+
+}
+
+.info-card h3{
+
+    margin-top:0;
+
+    margin-bottom:20px;
+
+    color:#2563EB;
+
+}
+
+/* ==========================================================
+DESCRIPTION
+========================================================== */
+
+.description-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    line-height:1.9;
+
+    border:1px solid #E5E7EB;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+
+}
+
+/* ==========================================================
+USES
+========================================================== */
+
+.use-card{
+
+    background:#2563EB;
+
+    color:white;
+
+    border-radius:14px;
+
+    text-align:center;
+
+    padding:18px;
+
+    font-weight:600;
+
+    box-shadow:0 8px 20px rgba(37,99,235,.18);
+
+}
+
+.use-card:hover{
+
+    transform:translateY(-4px);
+
+    background:#1D4ED8;
+
+}
+
+/* ==========================================================
+IMAGE HOVER
+========================================================== */
+
+img{
+
+    transition:.35s;
+
+}
+
+img:hover{
+
+    transform:scale(1.02);
+
+}
+
+/* ==========================================================
+DATAFRAME
+========================================================== */
+
+[data-testid="stDataFrame"]{
+
+    border-radius:18px;
+
+    border:1px solid #E5E7EB;
 
 }
