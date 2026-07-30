@@ -329,3 +329,190 @@ Classification Probability
         use_container_width=True,
         hide_index=True
     )
+    # ==========================================================
+    # MINERAL INFORMATION
+    # ==========================================================
+
+    st.divider()
+
+    st.markdown(
+        """
+<div class="section-title">
+Mineral Information
+</div>
+""",
+        unsafe_allow_html=True
+    )
+
+    info = MINERAL_INFO[mineral]
+
+    left, right = st.columns(2)
+
+    # ----------------------------------------------------------
+    # General Information
+    # ----------------------------------------------------------
+
+    with left:
+
+        st.markdown(
+            """
+<div class="info-card">
+<h3>General Information</h3>
+""",
+            unsafe_allow_html=True
+        )
+
+        st.markdown(f"**Chemical Formula**  \n{info['formula']}")
+        st.markdown(f"**Color**  \n{info['color']}")
+        st.markdown(f"**Hardness**  \n{info['hardness']}")
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    # ----------------------------------------------------------
+    # Producing Countries
+    # ----------------------------------------------------------
+
+    with right:
+
+        st.markdown(
+            """
+<div class="info-card">
+<h3>Producing Countries</h3>
+""",
+            unsafe_allow_html=True
+        )
+
+        for country in info["source"]:
+            st.markdown(f"• {country}")
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # ----------------------------------------------------------
+    # Description
+    # ----------------------------------------------------------
+
+    st.markdown("### Description")
+
+    st.markdown(
+        f"""
+<div class="description-card">
+{info['description']}
+</div>
+""",
+        unsafe_allow_html=True
+    )
+
+    st.markdown("---")
+
+    # ----------------------------------------------------------
+    # Uses
+    # ----------------------------------------------------------
+
+    st.markdown("### Uses")
+
+    use_cols = st.columns(len(info["uses"]))
+
+    for col, item in zip(use_cols, info["uses"]):
+
+        with col:
+
+            st.markdown(
+                f"""
+<div class="use-card">
+
+{item}
+
+</div>
+""",
+                unsafe_allow_html=True
+            )
+
+    # ==========================================================
+    # DOWNLOAD REPORT
+    # ==========================================================
+
+    st.divider()
+
+    result = f"""
+MINERAL CLASSIFICATION SYSTEM
+
+Prediction Date:
+{datetime.now().strftime("%d-%m-%Y %H:%M:%S")}
+
+Predicted Mineral:
+{mineral}
+
+Confidence:
+{confidence:.2f}%
+
+Chemical Formula:
+{info['formula']}
+
+Color:
+{info['color']}
+
+Hardness:
+{info['hardness']}
+
+Description:
+{info['description']}
+
+Producing Countries:
+{', '.join(info['source'])}
+
+Uses:
+{', '.join(info['uses'])}
+"""
+
+    st.download_button(
+        label="Download Prediction Report",
+        data=result,
+        file_name=f"Prediction_Report_{mineral}.txt",
+        mime="text/plain",
+        use_container_width=True
+    )
+
+# ==========================================================
+# NO IMAGE
+# ==========================================================
+
+else:
+
+    st.markdown(
+        """
+<div class="upload-box">
+
+<h2>Upload a Mineral Image</h2>
+
+<p>
+Supported formats:
+JPG • JPEG • PNG
+</p>
+
+</div>
+""",
+        unsafe_allow_html=True
+    )
+
+st.markdown("---")
+
+st.markdown(
+    """
+<div class="footer">
+
+Mineral Classification System
+
+Developed using TensorFlow Lite & Streamlit
+
+Universitas Gunadarma
+
+Cahya Dwi Handaka
+
+2026
+
+</div>
+""",
+    unsafe_allow_html=True
+)
