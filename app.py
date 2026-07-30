@@ -1,63 +1,69 @@
 import os
-from PIL import Image
-import pandas as pd
+from datetime import datetime
 
+import pandas as pd
 import streamlit as st
+from PIL import Image
 
 from utils.predict import predict_image
 from data.mineral_info import MINERAL_INFO
-from datetime import datetime
 
 # ==========================================================
-# Konfigurasi Halaman
+# PAGE CONFIG
 # ==========================================================
 
 st.set_page_config(
     page_title="Mineral Classification System",
-    page_icon="🪨",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
 # ==========================================================
-# CSS
+# LOAD CSS
 # ==========================================================
 
-with open("styles/style.css") as f:
-    st.markdown(
-        f"<style>{f.read()}</style>",
-        unsafe_allow_html=True
-    )
+css_path = os.path.join("styles", "style.css")
+
+if os.path.exists(css_path):
+    with open(css_path, encoding="utf-8") as f:
+        st.markdown(
+            f"<style>{f.read()}</style>",
+            unsafe_allow_html=True
+        )
 
 # ==========================================================
-# Header
+# HEADER
 # ==========================================================
 
-st.title("🪨 Mineral Classification System")
+st.markdown(
+    """
+    <div class="main-title">
+        Mineral Classification System
+    </div>
 
-st.markdown("""
-### Klasifikasi Batu Mineral Menggunakan CNN From Scratch
-
-Sistem ini mampu mengklasifikasikan lima jenis batu mineral menggunakan model
-Convolutional Neural Network (CNN) yang dibangun dari awal.
-""")
+    <div class="sub-title">
+        Convolutional Neural Network Based Mineral Identification
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 st.divider()
 
 # ==========================================================
-# Upload
+# UPLOAD
 # ==========================================================
 
 uploaded_file = st.file_uploader(
-    "📤 Upload gambar mineral",
+    "Upload Mineral Image",
     type=["jpg", "jpeg", "png"]
 )
 
 # ==========================================================
-# Prediksi
+# IF IMAGE EXISTS
 # ==========================================================
 
-if uploaded_file is not None:
+if uploaded_file:
 
     image = Image.open(uploaded_file).convert("RGB")
 
@@ -65,29 +71,29 @@ if uploaded_file is not None:
 
     image_path = os.path.join(
         "assets",
-        f"{mineral.lower()}.jpg"
+        mineral.lower() + ".jpg"
     )
 
     # ======================================================
-    # Perbandingan Gambar
+    # IMAGE COMPARISON
     # ======================================================
 
-    st.subheader("🖼️ Perbandingan Gambar")
+    st.markdown("## Image Comparison")
 
-    img1, img2 = st.columns(2)
+    col1, col2 = st.columns(2)
 
-    with img1:
+    with col1:
 
-        st.markdown("#### 📤 Gambar Upload")
+        st.markdown("### Uploaded Image")
 
         st.image(
             image,
             use_container_width=True
         )
 
-    with img2:
+    with col2:
 
-        st.markdown(f"#### 📚 Referensi {mineral}")
+        st.markdown("### Reference Image")
 
         if os.path.exists(image_path):
 
@@ -98,139 +104,186 @@ if uploaded_file is not None:
 
         else:
 
-            st.warning("Gambar referensi belum tersedia.")
+            st.warning("Reference image not found.")
 
     st.divider()
 
     # ======================================================
-    # Hasil Prediksi
+    # PREDICTION
     # ======================================================
 
-    st.subheader("🔍 Hasil Prediksi")
+    st.markdown("## Prediction Result")
 
-    st.success(f"## 🪨 {mineral}")
+    c1, c2 = st.columns([3, 1])
 
-    st.metric(
-        "Confidence",
-        f"{confidence:.2f}%"
-    )
+    with c1:
+
+        st.markdown(
+            f"""
+            <div class="prediction-card">
+
+            <h2>{mineral}</h2>
+
+            <p>Predicted Mineral</p>
+
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    with c2:
+
+        st.metric(
+            "Confidence",
+            f"{confidence:.2f}%"
+        )
 
     st.progress(confidence / 100)
 
+    st.divider()
+
     # ======================================================
-    # Visualisasi Confidence Semua Kelas
+    # PROBABILITY
     # ======================================================
 
-    st.subheader("📊 Probabilitas Semua Kelas")
+    st.markdown("## Classification Probability")
 
     class_names = [
         "Azurite",
         "Copper",
         "Hematite",
         "Malachite",
-        "Pyrite"
+        "Pyrite",
     ]
 
-    df = pd.DataFrame({
-        "Mineral": class_names,
-        "Confidence (%)": prediction * 100
-    })
+    df = pd.DataFrame(
+        {
+            "Mineral": class_names,
+            "Probability (%)": prediction * 100,
+        }
+    )
 
     st.bar_chart(
-        df.set_index("Mineral")
+        df.set_index("Mineral"),
+        use_container_width=True
     )
 
     st.dataframe(
-        df.style.format({
-            "Confidence (%)": "{:.2f}"
-        }),
-        use_container_width=True
+        df.style.format(
+            {"Probability (%)": "{:.2f}"}
+        ),
+        use_container_width=True,
+        hide_index=True,
     )
 
     st.divider()
 
     # ======================================================
-    # Informasi Mineral
+    # INFORMATION
     # ======================================================
 
     info = MINERAL_INFO[mineral]
 
-    st.subheader("📖 Informasi Mineral")
+    st.markdown("## Mineral Information")
 
-    info1, info2 = st.columns(2)
+    left, right = st.columns(2)
 
-    with info1:
+    with left:
 
-        st.write(f"**Formula Kimia** : {info['formula']}")
-        st.write(f"**Warna** : {info['color']}")
-        st.write(f"**Kekerasan** : {info['hardness']}")
+        st.markdown("### General Information")
 
-    with info2:
+        st.write(
+            f"**Chemical Formula:** {info['formula']}"
+        )
 
-        st.markdown("#### 🌍 Negara Penghasil")
+        st.write(
+            f"**Color:** {info['color']}"
+        )
 
-        for negara in info["source"]:
-            st.markdown(f"- {negara}")
+        st.write(
+            f"**Hardness:** {info['hardness']}"
+        )
 
-    st.markdown("#### 📝 Deskripsi")
+    with right:
+
+        st.markdown("### Producing Countries")
+
+        for country in info["source"]:
+
+            st.write("•", country)
+
+    st.markdown("### Description")
 
     st.write(info["description"])
 
-    st.markdown("#### ⚙️ Pemanfaatan")
+    st.markdown("### Uses")
 
     cols = st.columns(len(info["uses"]))
 
-    for col, penggunaan in zip(cols, info["uses"]):
-        col.info(penggunaan)
+    for col, use in zip(cols, info["uses"]):
 
-    # ======================================================
-    # Download Hasil Prediksi
-    # ======================================================
+        col.success(use)
 
     st.divider()
 
-    st.subheader("💾 Download Hasil Prediksi")
+    # ======================================================
+    # DOWNLOAD
+    # ======================================================
 
-    hasil = f"""
-=========================================
+    result = f"""
 MINERAL CLASSIFICATION SYSTEM
-=========================================
 
-Tanggal Prediksi : {datetime.now().strftime("%d-%m-%Y %H:%M:%S")}
-Mineral          : {mineral}
-Confidence       : {confidence:.2f} %
+Date:
+{datetime.now().strftime("%d-%m-%Y %H:%M:%S")}
 
------------------------------------------
-INFORMASI MINERAL
------------------------------------------
+Predicted Mineral:
+{mineral}
 
-Formula Kimia :
+Confidence:
+{confidence:.2f}%
+
+Chemical Formula:
 {info['formula']}
 
-Warna :
+Color:
 {info['color']}
 
-Kekerasan :
+Hardness:
 {info['hardness']}
 
-Deskripsi :
+Description:
 {info['description']}
 
-Negara Penghasil :
+Producing Countries:
 {', '.join(info['source'])}
 
-Pemanfaatan :
+Uses:
 {', '.join(info['uses'])}
 """
 
     st.download_button(
-        label="⬇ Download Hasil Prediksi (.txt)",
-        data=hasil,
-        file_name=f"Hasil_Prediksi_{mineral}.txt",
+        "Download Prediction Report",
+        result,
+        file_name=f"{mineral}.txt",
         mime="text/plain",
-        use_container_width=True
+        use_container_width=True,
     )
+
+# ==========================================================
+# NO IMAGE
+# ==========================================================
 
 else:
 
-    st.info("Silakan upload gambar mineral untuk memulai klasifikasi.")
+    st.markdown(
+        """
+        <div class="upload-box">
+
+        <h3>Upload a mineral image to begin classification.</h3>
+
+        Supported formats: JPG, JPEG, PNG
+
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
