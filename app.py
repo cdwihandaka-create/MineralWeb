@@ -91,21 +91,28 @@ st.divider()
 # IMAGE UPLOAD
 # ==========================================================
 
-st.markdown("""
+st.markdown(
+    """
 <div class="section-title">
 Upload Mineral Image
 </div>
 
 <p class="upload-text">
-Drag & drop an image here or click to browse
+Drag & Drop an image here or click to browse
 </p>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True
+)
+
+st.markdown('<div class="upload-container">', unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader(
     label="",
     type=["jpg", "jpeg", "png"],
     label_visibility="collapsed"
 )
+
+st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================================
 # PREDICTION
