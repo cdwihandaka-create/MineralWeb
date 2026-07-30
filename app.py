@@ -505,11 +505,7 @@ Mineral Classification System
 
 Developed using TensorFlow Lite & Streamlit
 
-Universitas Gunadarma
-
-Cahya Dwi Handaka
-
-2026
+Universitas Gunadarma Cahya Dwi Handaka 2026
 
 </div>
 """,
