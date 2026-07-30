@@ -409,7 +409,7 @@ Mineral Information
     # Uses
     # ----------------------------------------------------------
 
-    st.markdown("### Uses")
+    st.markdown("### Berguna untuk :")
 
     use_cols = st.columns(len(info["uses"]))
 
