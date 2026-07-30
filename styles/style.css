@@ -1,131 +1,206 @@
-/* =======================================================
-   Global
-======================================================= */
+/* =========================================================
+GENERAL
+========================================================= */
+
+html,
+body,
+[class*="css"]{
+    font-family: "Segoe UI", sans-serif;
+}
 
 .block-container{
-    padding-top:2rem;
-    padding-bottom:2rem;
     max-width:1200px;
+    padding-top:2rem;
+    padding-bottom:3rem;
 }
 
-/* Background */
-
-.stApp{
-    background:#F8FAFC;
-}
-
-/* =======================================================
-   Header
-======================================================= */
+/* =========================================================
+HEADER
+========================================================= */
 
 .main-title{
-
+    text-align:center;
     font-size:42px;
-
     font-weight:700;
-
-    color:#0F172A;
-
-    margin-bottom:5px;
-
+    color:#1f2937;
+    margin-bottom:10px;
 }
 
 .sub-title{
-
+    text-align:center;
+    color:#6b7280;
     font-size:18px;
-
-    color:#475569;
-
-    margin-bottom:25px;
-
+    margin-bottom:40px;
 }
 
-/* =======================================================
-   Card
-======================================================= */
+/* =========================================================
+UPLOAD BOX
+========================================================= */
 
-.card{
+.upload-box{
+    text-align:center;
+
+    border:2px dashed #CBD5E1;
+
+    border-radius:18px;
+
+    padding:70px;
+
+    background:#F8FAFC;
+
+    color:#475569;
+}
+
+/* =========================================================
+PREDICTION CARD
+========================================================= */
+
+.prediction-card{
 
     background:white;
 
-    padding:20px;
+    border-radius:18px;
 
-    border-radius:12px;
+    padding:25px;
 
-    border:1px solid #E2E8F0;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
 
-    box-shadow:0 2px 8px rgba(0,0,0,.05);
-
-    margin-bottom:20px;
+    border-left:6px solid #2563EB;
 
 }
 
-/* =======================================================
-   Section Title
-======================================================= */
+.prediction-card h2{
 
-.section-title{
+    margin:0;
 
-    font-size:22px;
-
-    font-weight:600;
-
-    color:#1E293B;
-
-    margin-bottom:15px;
-
-}
-
-/* =======================================================
-   Prediction
-======================================================= */
-
-.prediction{
-
-    font-size:32px;
-
-    font-weight:700;
+    font-size:34px;
 
     color:#2563EB;
 
 }
 
-.confidence{
+.prediction-card p{
 
-    font-size:18px;
+    margin-top:5px;
 
-    color:#64748B;
-
-}
-
-/* =======================================================
-   Metric
-======================================================= */
-
-.metric-label{
-
-    color:#64748B;
-
-    font-size:15px;
+    color:#6b7280;
 
 }
 
-.metric-value{
+/* =========================================================
+SECTION TITLE
+========================================================= */
 
-    font-size:22px;
+h2,h3{
+
+    color:#1E293B;
+
+}
+
+/* =========================================================
+METRIC
+========================================================= */
+
+[data-testid="metric-container"]{
+
+    background:white;
+
+    border-radius:15px;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+
+    padding:15px;
+
+}
+
+/* =========================================================
+DATAFRAME
+========================================================= */
+
+[data-testid="stDataFrame"]{
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+}
+
+/* =========================================================
+BUTTON
+========================================================= */
+
+.stDownloadButton>button{
+
+    width:100%;
+
+    background:#2563EB;
+
+    color:white;
+
+    border-radius:10px;
+
+    border:none;
+
+    padding:12px;
+
+    font-size:16px;
 
     font-weight:600;
 
 }
 
-/* =======================================================
-   Divider
-======================================================= */
+.stDownloadButton>button:hover{
 
-hr{
+    background:#1D4ED8;
 
-    margin-top:30px;
+}
 
-    margin-bottom:30px;
+/* =========================================================
+FILE UPLOADER
+========================================================= */
+
+[data-testid="stFileUploader"]{
+
+    border-radius:15px;
+
+}
+
+/* =========================================================
+SUCCESS BOX
+========================================================= */
+
+[data-testid="stAlert"]{
+
+    border-radius:12px;
+
+}
+
+/* =========================================================
+IMAGE
+========================================================= */
+
+img{
+
+    border-radius:15px;
+
+}
+
+/* =========================================================
+PROGRESS BAR
+========================================================= */
+
+.stProgress>div>div>div{
+
+    background:#2563EB;
+
+}
+
+/* =========================================================
+SIDEBAR
+========================================================= */
+
+section[data-testid="stSidebar"]{
+
+    display:none;
 
 }
