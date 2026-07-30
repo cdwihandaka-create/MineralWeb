@@ -25,9 +25,11 @@ st.set_page_config(
 css_path = os.path.join("styles", "style.css")
 
 if os.path.exists(css_path):
-    with open(css_path, encoding="utf-8") as f:
+
+    with open(css_path, encoding="utf-8") as css:
+
         st.markdown(
-            f"<style>{f.read()}</style>",
+            f"<style>{css.read()}</style>",
             unsafe_allow_html=True
         )
 
@@ -37,48 +39,109 @@ if os.path.exists(css_path):
 
 st.markdown(
     """
-    <div class="main-title">
-        Mineral Classification System
-    </div>
+<div class="main-title">
+Mineral Classification System
+</div>
 
-    <div class="sub-title">
-        Convolutional Neural Network Based Mineral Identification
-    </div>
-    """,
-    unsafe_allow_html=True,
+<div class="sub-title">
+Deep Learning Based Mineral Identification
+Using Convolutional Neural Network
+</div>
+""",
+    unsafe_allow_html=True
 )
+
+# ==========================================================
+# DASHBOARD INFORMATION
+# ==========================================================
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+
+    st.metric(
+        "Model",
+        "CNN"
+    )
+
+with col2:
+
+    st.metric(
+        "Classes",
+        "5"
+    )
+
+with col3:
+
+    st.metric(
+        "Input Size",
+        "224 × 224"
+    )
+
+with col4:
+
+    st.metric(
+        "Framework",
+        "TensorFlow Lite"
+    )
 
 st.divider()
 
 # ==========================================================
-# UPLOAD
+# IMAGE UPLOAD
 # ==========================================================
 
+st.markdown(
+"""
+<div class="section-title">
+
+Upload Mineral Image
+
+</div>
+""",
+unsafe_allow_html=True
+)
+
 uploaded_file = st.file_uploader(
-    "Upload Mineral Image",
-    type=["jpg", "jpeg", "png"]
+    label="Upload an image",
+    type=["jpg", "jpeg", "png"],
+    label_visibility="collapsed"
 )
 
 # ==========================================================
-# IF IMAGE EXISTS
+# PREDICTION
 # ==========================================================
 
-if uploaded_file:
+if uploaded_file is not None:
 
+    # Load Image
     image = Image.open(uploaded_file).convert("RGB")
 
+    # Predict
     mineral, confidence, prediction = predict_image(image)
 
+    # Reference Image
     image_path = os.path.join(
         "assets",
-        mineral.lower() + ".jpg"
+        f"{mineral.lower()}.jpg"
     )
 
-    # ======================================================
-    # IMAGE COMPARISON
-    # ======================================================
+# ==========================================================
+# IMAGE COMPARISON
+# ==========================================================
 
-    st.markdown("## Image Comparison")
+    st.divider()
+
+    st.markdown(
+        """
+<div class="section-title">
+
+Image Comparison
+
+</div>
+""",
+        unsafe_allow_html=True
+    )
 
     col1, col2 = st.columns(2)
 
@@ -104,186 +167,165 @@ if uploaded_file:
 
         else:
 
-            st.warning("Reference image not found.")
+            st.warning("Reference image is not available.")
+
+    # ==========================================================
+    # PREDICTION RESULT
+    # ==========================================================
 
     st.divider()
 
-    # ======================================================
-    # PREDICTION
-    # ======================================================
+    st.markdown(
+        """
+<div class="section-title">
+Prediction Result
+</div>
+""",
+        unsafe_allow_html=True
+    )
 
-    st.markdown("## Prediction Result")
+    left, right = st.columns([3, 1], gap="large")
 
-    c1, c2 = st.columns([3, 1])
+    # ----------------------------------------------------------
+    # Prediction Card
+    # ----------------------------------------------------------
 
-    with c1:
+    with left:
 
         st.markdown(
             f"""
-            <div class="prediction-card">
+<div class="prediction-card">
 
-            <h2>{mineral}</h2>
+<h2>{mineral}</h2>
 
-            <p>Predicted Mineral</p>
+<p>Predicted Mineral</p>
 
-            </div>
-            """,
-            unsafe_allow_html=True,
+<hr>
+
+<p>CNN Classification Result</p>
+
+</div>
+""",
+            unsafe_allow_html=True
         )
 
-    with c2:
+    # ----------------------------------------------------------
+    # Confidence Card
+    # ----------------------------------------------------------
+
+    with right:
 
         st.metric(
-            "Confidence",
-            f"{confidence:.2f}%"
+            label="Confidence",
+            value=f"{confidence:.2f}%"
+        )
+
+        if confidence >= 95:
+            status = "Highly Confident"
+
+        elif confidence >= 80:
+            status = "Confident"
+
+        elif confidence >= 60:
+            status = "Moderate"
+
+        else:
+            status = "Low Confidence"
+
+        st.markdown(
+            f"""
+<div class="status-card">
+{status}
+</div>
+""",
+            unsafe_allow_html=True
         )
 
     st.progress(confidence / 100)
 
+    # ==========================================================
+    # CLASSIFICATION PROBABILITY
+    # ==========================================================
+
     st.divider()
 
-    # ======================================================
-    # PROBABILITY
-    # ======================================================
-
-    st.markdown("## Classification Probability")
+    st.markdown(
+        """
+<div class="section-title">
+Classification Probability
+</div>
+""",
+        unsafe_allow_html=True
+    )
 
     class_names = [
         "Azurite",
         "Copper",
         "Hematite",
         "Malachite",
-        "Pyrite",
+        "Pyrite"
     ]
 
-    df = pd.DataFrame(
-        {
-            "Mineral": class_names,
-            "Probability (%)": prediction * 100,
-        }
+    df = pd.DataFrame({
+
+        "Mineral": class_names,
+
+        "Probability (%)": prediction * 100
+
+    })
+
+    df["Probability (%)"] = df["Probability (%)"].round(2)
+
+    df = df.sort_values(
+        by="Probability (%)",
+        ascending=False
     )
+
+    # ----------------------------------------------------------
+    # Probability Distribution
+    # ----------------------------------------------------------
+
+    st.markdown("### Probability Distribution")
+
+    for _, row in df.iterrows():
+
+        col_left, col_right = st.columns([5, 1])
+
+        with col_left:
+
+            st.markdown(
+                f"**{row['Mineral']}**"
+            )
+
+            st.progress(
+                row["Probability (%)"] / 100
+            )
+
+        with col_right:
+
+            st.markdown(
+                f"**{row['Probability (%)']:.2f}%**"
+            )
+
+    # ----------------------------------------------------------
+    # Visualization
+    # ----------------------------------------------------------
+
+    st.markdown("### Visualization")
 
     st.bar_chart(
         df.set_index("Mineral"),
         use_container_width=True
     )
 
+    # ----------------------------------------------------------
+    # Detailed Result
+    # ----------------------------------------------------------
+
+    st.markdown("### Detailed Result")
+
     st.dataframe(
-        df.style.format(
-            {"Probability (%)": "{:.2f}"}
-        ),
+        df,
         use_container_width=True,
-        hide_index=True,
-    )
-
-    st.divider()
-
-    # ======================================================
-    # INFORMATION
-    # ======================================================
-
-    info = MINERAL_INFO[mineral]
-
-    st.markdown("## Mineral Information")
-
-    left, right = st.columns(2)
-
-    with left:
-
-        st.markdown("### General Information")
-
-        st.write(
-            f"**Chemical Formula:** {info['formula']}"
-        )
-
-        st.write(
-            f"**Color:** {info['color']}"
-        )
-
-        st.write(
-            f"**Hardness:** {info['hardness']}"
-        )
-
-    with right:
-
-        st.markdown("### Producing Countries")
-
-        for country in info["source"]:
-
-            st.write("•", country)
-
-    st.markdown("### Description")
-
-    st.write(info["description"])
-
-    st.markdown("### Uses")
-
-    cols = st.columns(len(info["uses"]))
-
-    for col, use in zip(cols, info["uses"]):
-
-        col.success(use)
-
-    st.divider()
-
-    # ======================================================
-    # DOWNLOAD
-    # ======================================================
-
-    result = f"""
-MINERAL CLASSIFICATION SYSTEM
-
-Date:
-{datetime.now().strftime("%d-%m-%Y %H:%M:%S")}
-
-Predicted Mineral:
-{mineral}
-
-Confidence:
-{confidence:.2f}%
-
-Chemical Formula:
-{info['formula']}
-
-Color:
-{info['color']}
-
-Hardness:
-{info['hardness']}
-
-Description:
-{info['description']}
-
-Producing Countries:
-{', '.join(info['source'])}
-
-Uses:
-{', '.join(info['uses'])}
-"""
-
-    st.download_button(
-        "Download Prediction Report",
-        result,
-        file_name=f"{mineral}.txt",
-        mime="text/plain",
-        use_container_width=True,
-    )
-
-# ==========================================================
-# NO IMAGE
-# ==========================================================
-
-else:
-
-    st.markdown(
-        """
-        <div class="upload-box">
-
-        <h3>Upload a mineral image to begin classification.</h3>
-
-        Supported formats: JPG, JPEG, PNG
-
-        </div>
-        """,
-        unsafe_allow_html=True,
+        hide_index=True
     )
