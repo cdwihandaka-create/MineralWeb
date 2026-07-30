@@ -91,19 +91,18 @@ st.divider()
 # IMAGE UPLOAD
 # ==========================================================
 
-st.markdown(
-"""
+st.markdown("""
 <div class="section-title">
-
 Upload Mineral Image
-
 </div>
-""",
-unsafe_allow_html=True
-)
+
+<p class="upload-text">
+Drag & drop an image here or click to browse
+</p>
+""", unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader(
-    label="Upload an image",
+    label="",
     type=["jpg", "jpeg", "png"],
     label_visibility="collapsed"
 )
