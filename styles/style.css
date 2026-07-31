@@ -1,129 +1,133 @@
 /* ==========================================================
-   GOOGLE FONT
+   FONTS
+   Playfair Display  -> judul, kesan jurnal/museum geologi
+   Inter              -> teks isi
+   JetBrains Mono     -> data teknis (formula, hardness, %) kesan lab report
    ========================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lexend:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 /* ==========================================================
    DESIGN TOKENS
    ========================================================== */
 
 :root{
-    --navy-900:#1E3A6B;
-    --navy-800:#0D2547;
-    --navy-700:#153A6E;
-    --navy-600:#2C4F85;
-    --navy-500:#3E6299;
+    --bg-0:#0A0E16;
+    --bg-1:#0E1420;
+    --bg-2:#121927;
 
-    --slate-700:#1E293B;
-    --slate-500:#54607A;
-    --slate-400:#8492A6;
+    --surface:rgba(255,255,255,.035);
+    --surface-hover:rgba(255,255,255,.055);
+    --surface-solid:#131A28;
 
-    --accent:#A8823C;
-    --accent-soft:#F4ECD9;
+    --border:rgba(255,255,255,.09);
+    --border-strong:rgba(255,255,255,.16);
 
-    /* Warna asli tiap mineral — dipakai dinamis pada prediction card & swatch */
-    --azurite:#1E4FB8;
-    --azurite-tint:#E9EFFC;
-    --copper:#B5651D;
-    --copper-tint:#FBEFE4;
-    --hematite:#8B2E2E;
-    --hematite-tint:#F8EAE9;
-    --malachite:#1E7A4C;
-    --malachite-tint:#E8F5EE;
-    --pyrite:#B8890B;
-    --pyrite-tint:#FBF2DE;
+    --text-1:#F2F5FA;
+    --text-2:#A6B1C7;
+    --text-3:#6B7590;
 
-    --success:#0F7A55;
-    --success-bg:#EAF6F0;
-    --success-line:#BFE3D1;
+    --gold:#D9B168;
+    --gold-soft:rgba(217,177,104,.16);
+    --gold-line:rgba(217,177,104,.35);
 
-    --warning:#B7791F;
-    --warning-bg:#FBF3E3;
-    --warning-line:#F0DDAF;
+    --azurite:#5B8CFF;   --azurite-glow:rgba(91,140,255,.35);
+    --copper:#E8935A;    --copper-glow:rgba(232,147,90,.35);
+    --hematite:#E5665C;  --hematite-glow:rgba(229,102,92,.35);
+    --malachite:#4BC98D; --malachite-glow:rgba(75,201,141,.35);
+    --pyrite:#E9C665;    --pyrite-glow:rgba(233,198,101,.35);
 
-    --danger:#B42318;
-    --danger-bg:#FBECEA;
-    --danger-line:#F0C6C0;
-
-    --line:#E2E8F0;
-    --line-soft:#EDF1F6;
-    --surface:#FFFFFF;
-    --bg:#F6F8FB;
+    --success:#4BC98D; --success-bg:rgba(75,201,141,.12); --success-line:rgba(75,201,141,.3);
+    --warning:#E9C665; --warning-bg:rgba(233,198,101,.12); --warning-line:rgba(233,198,101,.3);
+    --danger:#E5665C;  --danger-bg:rgba(229,102,92,.12);  --danger-line:rgba(229,102,92,.3);
+    --info:#5B8CFF;    --info-bg:rgba(91,140,255,.12);    --info-line:rgba(91,140,255,.3);
 
     --radius-sm:8px;
-    --radius-md:12px;
-    --radius-lg:14px;
-    --radius-xl:16px;
-
-    --shadow-sm:0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.05);
-    --shadow-md:0 4px 12px rgba(15,23,42,.06);
-    --shadow-lg:0 14px 32px rgba(15,23,42,.10);
+    --radius-md:14px;
+    --radius-lg:18px;
+    --radius-xl:22px;
 }
 
 /* ==========================================================
-   GENERAL — latar dengan pola facet halus ala permukaan batu
+   GENERAL — latar gelap dengan ambient glow yang bernapas pelan
    ========================================================== */
 
-html,
-body,
-[class*="css"]{
+html, body, [class*="css"]{
     font-family:"Inter", sans-serif;
-    color:var(--slate-700);
-    font-feature-settings:"tnum" 1;
-    background-color:var(--bg);
-    background-image:
-        linear-gradient(135deg, rgba(11,30,61,.025) 25%, transparent 25%),
-        linear-gradient(225deg, rgba(11,30,61,.025) 25%, transparent 25%),
-        linear-gradient(45deg, rgba(11,30,61,.025) 25%, transparent 25%),
-        linear-gradient(315deg, rgba(11,30,61,.025) 25%, transparent 25%);
-    background-position:40px 0, 40px 0, 0 0, 0 0;
-    background-size:80px 80px;
-    background-repeat:repeat;
+    color:var(--text-2);
+    background:var(--bg-0);
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    background:
+        radial-gradient(700px 500px at 12% 8%, rgba(91,140,255,.10), transparent 60%),
+        radial-gradient(650px 550px at 90% 15%, rgba(217,177,104,.08), transparent 60%),
+        radial-gradient(800px 600px at 50% 100%, rgba(75,201,141,.07), transparent 60%);
+    animation:ambientDrift 18s ease-in-out infinite;
+}
+
+@keyframes ambientDrift{
+    0%,100%{ opacity:1; transform:translateY(0) scale(1); }
+    50%{ opacity:.75; transform:translateY(-14px) scale(1.03); }
 }
 
 .block-container{
     max-width:1180px;
-    padding-top:2.2rem;
-    padding-bottom:3rem;
-    animation:fadeIn .4s ease;
+    padding-top:2.4rem;
+    padding-bottom:3.5rem;
+    animation:pageIn .55s cubic-bezier(.22,1,.36,1) both;
 }
 
-/* ==========================================================
-   ANIMATION
-   ========================================================== */
-
-@keyframes fadeIn{
-    from{ opacity:0; }
-    to{ opacity:1; }
-}
-
-@keyframes fadeUp{
-    from{ opacity:0; transform:translateY(10px); }
+@keyframes pageIn{
+    from{ opacity:0; transform:translateY(14px); }
     to{ opacity:1; transform:translateY(0); }
 }
 
-@keyframes spin{
+@keyframes fadeUp{
+    from{ opacity:0; transform:translateY(12px); }
+    to{ opacity:1; transform:translateY(0); }
+}
+
+@keyframes scanline{
+    0%{ transform:translateY(-100%); }
+    100%{ transform:translateY(100%); }
+}
+
+@keyframes ringSpin{
     from{ transform:rotate(0deg); }
     to{ transform:rotate(360deg); }
 }
 
-@keyframes facetSweep{
-    0%{ transform:translateX(-120%) rotate(8deg); }
-    100%{ transform:translateX(220%) rotate(8deg); }
+@keyframes softPulse{
+    0%,100%{ box-shadow:0 0 0 0 var(--pulse-color, rgba(217,177,104,.28)); }
+    50%{ box-shadow:0 0 0 8px rgba(217,177,104,0); }
+}
+
+@keyframes dotPulse{
+    0%,100%{ transform:scale(1); opacity:.55; }
+    50%{ transform:scale(1.25); opacity:1; }
+}
+
+@keyframes shimmerFill{
+    0%{ background-position:0 0; }
+    100%{ background-position:34px 0; }
 }
 
 button, .stButton>button, .stDownloadButton>button,
 [data-testid="metric-container"], .upload-container,
 [data-testid="stFileUploaderDropzone"], .use-card,
-.info-card, .status-card, .image-frame{
-    transition:box-shadow .18s ease, border-color .18s ease, background-color .18s ease, transform .18s ease;
+.info-card, .status-card, .image-frame, .glass-panel{
+    transition:box-shadow .2s ease, border-color .2s ease, background-color .2s ease, transform .2s ease;
 }
 
 .info-card, [data-testid="metric-container"], .status-card,
 .image-frame, .use-card, .prediction-card, .description-card,
 .upload-box{
-    animation:fadeUp .35s ease both;
+    animation:fadeUp .4s cubic-bezier(.22,1,.36,1) both;
 }
 
 /* ==========================================================
@@ -132,68 +136,78 @@ button, .stButton>button, .stDownloadButton>button,
 
 .main-title{
     text-align:center;
-    font-family:"Lexend","Inter",sans-serif;
-    font-size:36px;
+    font-family:"Playfair Display", serif;
+    font-size:44px;
     font-weight:700;
-    color:var(--navy-900);
-    letter-spacing:-.3px;
-    margin-bottom:6px;
+    color:var(--text-1);
+    letter-spacing:.2px;
+    margin-bottom:10px;
 }
 
 .sub-title{
     text-align:center;
-    color:var(--slate-500);
-    font-size:15px;
+    color:var(--text-3);
+    font-size:14.5px;
+    letter-spacing:.3px;
     line-height:1.7;
     max-width:560px;
-    margin:0 auto 32px;
-    padding-bottom:24px;
-    border-bottom:1px solid var(--line);
-    position:relative;
+    margin:0 auto 8px;
+    text-transform:uppercase;
 }
 
-.sub-title::after{
-    content:"";
-    position:absolute;
-    bottom:-1px;
-    left:50%;
-    transform:translateX(-50%) rotate(45deg);
-    width:9px;
-    height:9px;
-    background:var(--accent);
-    border:2px solid var(--bg);
+.class-dots{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin:18px 0 34px;
 }
+
+.class-dots span{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    display:inline-block;
+    animation:dotPulse 2.4s ease-in-out infinite;
+}
+
+.class-dots span:nth-child(1){ background:var(--azurite); animation-delay:0s; }
+.class-dots span:nth-child(2){ background:var(--copper); animation-delay:.3s; }
+.class-dots span:nth-child(3){ background:var(--hematite); animation-delay:.6s; }
+.class-dots span:nth-child(4){ background:var(--malachite); animation-delay:.9s; }
+.class-dots span:nth-child(5){ background:var(--pyrite); animation-delay:1.2s; }
 
 /* ==========================================================
-   SECTION TITLE — penanda kecil bentuk facet/kristal
+   SECTION TITLE
    ========================================================== */
 
 .section-title{
-    font-family:"Lexend","Inter",sans-serif;
-    font-size:19px;
-    font-weight:600;
-    color:var(--navy-900);
-    margin-bottom:10px;
-    padding-left:16px;
-    position:relative;
+    font-family:"Playfair Display", serif;
+    font-size:22px;
+    font-weight:700;
+    color:var(--text-1);
+    margin-bottom:12px;
+    padding-bottom:12px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
 .section-title::before{
     content:"";
-    position:absolute;
-    left:0;
-    top:50%;
-    width:9px;
-    height:9px;
-    transform:translateY(-50%) rotate(45deg);
-    background:var(--navy-700);
-    border-radius:1.5px;
+    width:8px;
+    height:8px;
+    border-radius:2px;
+    transform:rotate(45deg);
+    background:var(--gold);
+    box-shadow:0 0 10px var(--gold-line);
+    flex-shrink:0;
 }
 
 .upload-text{
     text-align:center;
-    color:var(--slate-500);
-    font-size:14px;
+    color:var(--text-3);
+    font-size:13.5px;
     margin-bottom:18px;
 }
 
@@ -203,31 +217,30 @@ button, .stButton>button, .stDownloadButton>button,
 
 [data-testid="metric-container"]{
     background:var(--surface);
-    border:1px solid var(--line);
+    backdrop-filter:blur(14px);
+    border:1px solid var(--border);
     border-radius:var(--radius-md);
-    padding:16px 18px;
-    box-shadow:var(--shadow-sm);
-    border-top:2px solid var(--navy-700);
+    padding:18px 20px;
 }
 
 [data-testid="metric-container"]:hover{
-    border-color:var(--line);
-    border-top-color:var(--accent);
-    box-shadow:var(--shadow-md);
-    transform:translateY(-2px);
+    background:var(--surface-hover);
+    border-color:var(--border-strong);
+    transform:translateY(-3px);
 }
 
 [data-testid="stMetricValue"]{
-    color:var(--navy-800);
-    font-weight:700;
-    font-size:22px;
+    color:var(--text-1);
+    font-family:"JetBrains Mono", monospace;
+    font-weight:600;
+    font-size:21px;
 }
 
 [data-testid="stMetricLabel"]{
-    color:var(--slate-500);
-    font-size:12.5px;
+    color:var(--text-3);
+    font-size:11.5px;
     text-transform:uppercase;
-    letter-spacing:.4px;
+    letter-spacing:.6px;
 }
 
 /* ==========================================================
@@ -236,11 +249,11 @@ button, .stButton>button, .stDownloadButton>button,
 
 .upload-container{
     background:var(--surface);
-    border:1px solid var(--line);
+    backdrop-filter:blur(14px);
+    border:1px solid var(--border);
     border-radius:var(--radius-lg);
-    padding:18px;
-    margin-bottom:22px;
-    box-shadow:var(--shadow-sm);
+    padding:20px;
+    margin-bottom:24px;
 }
 
 [data-testid="stFileUploader"]{
@@ -249,15 +262,19 @@ button, .stButton>button, .stDownloadButton>button,
 }
 
 [data-testid="stFileUploaderDropzone"]{
-    border:1.5px dashed #CBD5E1 !important;
+    border:1.5px dashed rgba(255,255,255,.16) !important;
     border-radius:var(--radius-md);
-    background:#FAFBFD;
-    padding:38px;
+    background:rgba(255,255,255,.015);
+    padding:42px;
 }
 
 [data-testid="stFileUploaderDropzone"]:hover{
-    border-color:var(--navy-600) !important;
-    background:#F5F8FC;
+    border-color:var(--gold-line) !important;
+    background:rgba(217,177,104,.04);
+}
+
+[data-testid="stFileUploaderDropzone"] *{
+    color:var(--text-2) !important;
 }
 
 /* ==========================================================
@@ -267,26 +284,26 @@ button, .stButton>button, .stDownloadButton>button,
 .stButton>button,
 .stDownloadButton>button{
     border-radius:var(--radius-sm);
-    border:1px solid var(--navy-800);
-    background:var(--navy-800);
-    color:white;
+    border:1px solid var(--gold-line);
+    background:linear-gradient(180deg, rgba(217,177,104,.16), rgba(217,177,104,.08));
+    color:var(--gold);
     font-weight:600;
-    font-size:14.5px;
-    letter-spacing:.1px;
-    padding:11px 18px;
-    box-shadow:var(--shadow-sm);
+    font-size:14px;
+    letter-spacing:.2px;
+    padding:11px 20px;
 }
 
 .stButton>button:hover,
 .stDownloadButton>button:hover{
-    background:var(--navy-700);
-    border-color:var(--navy-700);
-    box-shadow:var(--shadow-md);
+    background:linear-gradient(180deg, rgba(217,177,104,.26), rgba(217,177,104,.14));
+    border-color:var(--gold);
+    box-shadow:0 0 22px rgba(217,177,104,.18);
+    transform:translateY(-2px);
 }
 
 .stButton>button:active,
 .stDownloadButton>button:active{
-    background:var(--navy-900);
+    transform:translateY(0);
 }
 
 /* ==========================================================
@@ -301,8 +318,17 @@ img{
    PROGRESS
    ========================================================== */
 
+.stProgress > div{
+    background:rgba(255,255,255,.08) !important;
+    border-radius:6px;
+}
+
 .stProgress>div>div>div{
-    background:var(--navy-700);
+    background:linear-gradient(90deg, var(--gold), #F0D9A0);
+    background-image:linear-gradient(90deg, var(--gold), #F0D9A0),
+        repeating-linear-gradient(45deg, rgba(255,255,255,.25) 0 8px, transparent 8px 16px);
+    background-size:100% 100%, 34px 34px;
+    animation:shimmerFill 1.1s linear infinite;
     border-radius:6px;
 }
 
@@ -312,9 +338,8 @@ img{
 
 [data-testid="stDataFrame"]{
     border-radius:var(--radius-md);
-    border:1px solid var(--line);
+    border:1px solid var(--border);
     overflow:hidden;
-    box-shadow:var(--shadow-sm);
 }
 
 /* ==========================================================
@@ -323,8 +348,8 @@ img{
 
 hr{
     border:none;
-    border-top:1px solid var(--line);
-    margin:30px 0;
+    border-top:1px solid var(--border);
+    margin:34px 0;
 }
 
 /* ==========================================================
@@ -333,104 +358,99 @@ hr{
 
 .footer{
     text-align:center;
-    color:var(--slate-400);
-    font-size:12.5px;
-    margin-top:36px;
-    letter-spacing:.2px;
+    color:var(--text-3);
+    font-size:12px;
+    margin-top:40px;
+    letter-spacing:.5px;
+    text-transform:uppercase;
 }
 
 /* ==========================================================
-   PREDICTION CARD — warna dinamis mengikuti jenis mineral
+   PREDICTION CARD — glass gelap + glow warna mineral + scanline
    ========================================================== */
 
 .prediction-card{
     position:relative;
     overflow:hidden;
-    background:var(--navy-900);
-    color:#F1F5F9;
-    border-radius:var(--radius-lg);
-    padding:30px 32px;
-    box-shadow:var(--shadow-lg);
-    border-top:3px solid var(--accent);
+    background:linear-gradient(160deg, var(--surface-solid), var(--bg-1));
+    border:1px solid var(--border-strong);
+    border-radius:var(--radius-xl);
+    padding:34px 36px;
+    --pulse-color:var(--gold-line);
+    animation:fadeUp .4s cubic-bezier(.22,1,.36,1) both, softPulse 3s ease-out 1;
 }
 
-/* facet accent di pojok kanan atas, meniru sisi potongan kristal */
-.prediction-card::before{
-    content:"";
+.prediction-card .scan{
     position:absolute;
-    top:0; right:0;
-    width:0; height:0;
-    border-style:solid;
-    border-width:0 90px 90px 0;
-    border-color:transparent rgba(255,255,255,.06) transparent transparent;
-}
-
-/* kilau tipis yang lewat sekali saat kartu muncul */
-.prediction-card::after{
-    content:"";
-    position:absolute;
-    top:-20%;
-    left:0;
-    width:35%;
-    height:140%;
-    background:linear-gradient(120deg, transparent, rgba(255,255,255,.10), transparent);
-    animation:facetSweep 1.6s ease-out .3s 1;
+    left:0; right:0;
+    height:70%;
+    top:0;
+    background:linear-gradient(180deg, transparent, rgba(217,177,104,.10), transparent);
+    animation:scanline 2.2s ease-in-out 1;
     pointer-events:none;
 }
 
+.prediction-card .eyebrow{
+    font-family:"JetBrains Mono", monospace;
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--text-3);
+    margin-bottom:10px;
+}
+
 .prediction-card h2{
-    font-family:"Lexend","Inter",sans-serif;
-    font-size:30px;
-    margin-bottom:6px;
+    font-family:"Playfair Display", serif;
+    font-size:36px;
+    margin-bottom:4px;
     font-weight:700;
-    text-transform:capitalize;
-    color:#FFFFFF;
+    color:var(--text-1);
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:12px;
 }
 
 .prediction-card h2::before{
     content:"";
-    display:inline-block;
-    width:14px;
-    height:14px;
+    width:13px;
+    height:13px;
     border-radius:3px;
     transform:rotate(45deg);
-    background:var(--mineral-color, var(--accent));
-    box-shadow:0 0 0 3px rgba(255,255,255,.08);
+    background:var(--mineral-color, var(--gold));
+    box-shadow:0 0 16px var(--mineral-glow, var(--gold-line));
 }
 
 .prediction-card p{
     margin:0;
-    opacity:.72;
-    font-size:14.5px;
+    color:var(--text-3);
+    font-size:14px;
 }
 
 .prediction-card hr{
-    border-top:1px solid rgba(255,255,255,.14);
-    margin:16px 0;
+    border-top:1px solid var(--border);
+    margin:18px 0;
 }
 
 .prediction-card .confidence-badge{
-    display:inline-block;
-    margin-top:14px;
-    padding:5px 13px;
-    border-radius:var(--radius-sm);
-    background:rgba(255,255,255,.10);
-    border:1px solid rgba(255,255,255,.18);
-    color:#F1F5F9;
-    font-size:13px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:16px;
+    padding:6px 14px;
+    border-radius:999px;
+    background:var(--mineral-soft, var(--gold-soft));
+    border:1px solid var(--mineral-glow, var(--gold-line));
+    color:var(--text-1);
+    font-family:"JetBrains Mono", monospace;
+    font-size:12.5px;
     font-weight:600;
-    letter-spacing:.2px;
 }
 
-/* Modifier per mineral — tinggal tambahkan class mineral-azurite dst. dari Python */
-.prediction-card.mineral-azurite{ background:linear-gradient(160deg, var(--navy-900) 0%, var(--azurite) 130%); --mineral-color:#7FA6FF; border-top-color:var(--azurite); }
-.prediction-card.mineral-copper{ background:linear-gradient(160deg, var(--navy-900) 0%, var(--copper) 140%); --mineral-color:#E8A15E; border-top-color:var(--copper); }
-.prediction-card.mineral-hematite{ background:linear-gradient(160deg, var(--navy-900) 0%, var(--hematite) 140%); --mineral-color:#E38B8B; border-top-color:var(--hematite); }
-.prediction-card.mineral-malachite{ background:linear-gradient(160deg, var(--navy-900) 0%, var(--malachite) 140%); --mineral-color:#6FCB9C; border-top-color:var(--malachite); }
-.prediction-card.mineral-pyrite{ background:linear-gradient(160deg, var(--navy-900) 0%, var(--pyrite) 140%); --mineral-color:#E8C874; border-top-color:var(--pyrite); }
+.prediction-card.mineral-azurite{ --mineral-color:var(--azurite); --mineral-glow:var(--azurite-glow); --mineral-soft:rgba(91,140,255,.14); --pulse-color:var(--azurite-glow); }
+.prediction-card.mineral-copper{ --mineral-color:var(--copper); --mineral-glow:var(--copper-glow); --mineral-soft:rgba(232,147,90,.14); --pulse-color:var(--copper-glow); }
+.prediction-card.mineral-hematite{ --mineral-color:var(--hematite); --mineral-glow:var(--hematite-glow); --mineral-soft:rgba(229,102,92,.14); --pulse-color:var(--hematite-glow); }
+.prediction-card.mineral-malachite{ --mineral-color:var(--malachite); --mineral-glow:var(--malachite-glow); --mineral-soft:rgba(75,201,141,.14); --pulse-color:var(--malachite-glow); }
+.prediction-card.mineral-pyrite{ --mineral-color:var(--pyrite); --mineral-glow:var(--pyrite-glow); --mineral-soft:rgba(233,198,101,.14); --pulse-color:var(--pyrite-glow); }
 
 /* ==========================================================
    STATUS CARD
@@ -438,107 +458,103 @@ hr{
 
 .status-card{
     background:var(--surface);
+    backdrop-filter:blur(10px);
     border-radius:var(--radius-md);
     text-align:center;
-    padding:14px;
+    padding:15px;
     margin-top:14px;
-    border:1px solid var(--line);
-    box-shadow:var(--shadow-sm);
+    border:1px solid var(--border);
     font-weight:600;
-    font-size:14px;
-    color:var(--navy-700);
+    font-size:13.5px;
+    color:var(--info);
+    font-family:"JetBrains Mono", monospace;
+    letter-spacing:.3px;
 }
 
-.status-card.status-high{
-    color:var(--success);
-    background:var(--success-bg);
-    border-color:var(--success-line);
-}
-
-.status-card.status-good{
-    color:var(--navy-700);
-    background:#EEF3FA;
-    border-color:#CBDBEF;
-}
-
-.status-card.status-moderate{
-    color:var(--warning);
-    background:var(--warning-bg);
-    border-color:var(--warning-line);
-}
-
-.status-card.status-low{
-    color:var(--danger);
-    background:var(--danger-bg);
-    border-color:var(--danger-line);
-}
+.status-card.status-high{ color:var(--success); background:var(--success-bg); border-color:var(--success-line); }
+.status-card.status-good{ color:var(--info); background:var(--info-bg); border-color:var(--info-line); }
+.status-card.status-moderate{ color:var(--warning); background:var(--warning-bg); border-color:var(--warning-line); }
+.status-card.status-low{ color:var(--danger); background:var(--danger-bg); border-color:var(--danger-line); }
 
 /* ==========================================================
-   EMPTY STATE (belum ada gambar diupload)
+   EMPTY STATE
    ========================================================== */
 
 .upload-box{
     text-align:center;
     background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:var(--radius-lg);
-    padding:52px 30px;
-    box-shadow:var(--shadow-sm);
+    backdrop-filter:blur(14px);
+    border:1px dashed var(--border-strong);
+    border-radius:var(--radius-xl);
+    padding:56px 30px;
+}
+
+.upload-box .crystal{
+    width:34px;
+    height:34px;
+    margin:0 auto 18px;
     position:relative;
 }
 
-.upload-box::before{
+.upload-box .crystal::before,
+.upload-box .crystal::after{
     content:"";
-    display:block;
-    width:22px;
-    height:22px;
-    margin:0 auto 16px;
+    position:absolute;
+    inset:0;
+    border-radius:5px;
     transform:rotate(45deg);
-    background:linear-gradient(135deg, var(--azurite), var(--malachite), var(--pyrite), var(--copper));
-    border-radius:4px;
+}
+
+.upload-box .crystal::before{
+    background:conic-gradient(from 0deg, var(--azurite), var(--malachite), var(--pyrite), var(--copper), var(--hematite), var(--azurite));
     opacity:.85;
+    animation:ringSpin 6s linear infinite;
+}
+
+.upload-box .crystal::after{
+    inset:5px;
+    background:var(--bg-1);
 }
 
 .upload-box h2{
-    font-family:"Lexend","Inter",sans-serif;
-    font-size:19px;
-    font-weight:600;
-    color:var(--navy-900);
+    font-family:"Playfair Display", serif;
+    font-size:21px;
+    font-weight:700;
+    color:var(--text-1);
     margin-bottom:8px;
 }
 
 .upload-box p{
-    color:var(--slate-500);
-    font-size:14px;
+    color:var(--text-3);
+    font-size:13.5px;
     margin:0;
+    letter-spacing:.3px;
 }
 
 /* ==========================================================
-   IMAGE FRAME (perbandingan gambar upload vs referensi)
+   IMAGE FRAME
    ========================================================== */
 
 .image-frame{
     background:var(--surface);
-    border:1px solid var(--line);
+    backdrop-filter:blur(12px);
+    border:1px solid var(--border);
     border-radius:var(--radius-lg);
     padding:14px;
-    box-shadow:var(--shadow-sm);
 }
 
 .image-frame:hover{
-    border-color:var(--navy-500);
-    box-shadow:var(--shadow-md);
+    border-color:var(--border-strong);
 }
 
 .image-frame .image-label{
     text-align:center;
-    font-weight:600;
-    font-family:"Lexend","Inter",sans-serif;
-    color:var(--slate-500);
+    font-family:"JetBrains Mono", monospace;
+    color:var(--text-3);
     margin-bottom:10px;
-    font-size:12px;
+    font-size:11px;
     text-transform:uppercase;
-    letter-spacing:.6px;
+    letter-spacing:1px;
 }
 
 .image-frame img{
@@ -551,27 +567,31 @@ hr{
 
 .info-card{
     background:var(--surface);
+    backdrop-filter:blur(12px);
     border-radius:var(--radius-lg);
-    padding:24px;
-    box-shadow:var(--shadow-sm);
-    border:1px solid var(--line);
+    padding:26px;
+    border:1px solid var(--border);
     height:100%;
 }
 
 .info-card:hover{
-    box-shadow:var(--shadow-md);
-    border-color:var(--navy-500);
+    border-color:var(--border-strong);
 }
 
 .info-card h3{
     margin-top:0;
-    margin-bottom:16px;
-    font-size:16px;
+    margin-bottom:18px;
+    font-family:"Playfair Display", serif;
+    font-size:17px;
+    font-weight:700;
+    color:var(--text-1);
+    padding-bottom:12px;
+    border-bottom:1px solid var(--border);
+}
+
+.info-card strong{
+    color:var(--text-1);
     font-weight:600;
-    color:var(--navy-800);
-    font-family:"Lexend","Inter",sans-serif;
-    padding-bottom:10px;
-    border-bottom:1px solid var(--line-soft);
 }
 
 /* ==========================================================
@@ -580,13 +600,13 @@ hr{
 
 .description-card{
     background:var(--surface);
+    backdrop-filter:blur(12px);
     border-radius:var(--radius-lg);
-    padding:24px;
-    line-height:1.85;
-    color:var(--slate-700);
+    padding:26px;
+    line-height:1.9;
+    color:var(--text-2);
     font-size:14.5px;
-    border:1px solid var(--line);
-    box-shadow:var(--shadow-sm);
+    border:1px solid var(--border);
 }
 
 /* ==========================================================
@@ -595,91 +615,113 @@ hr{
 
 .use-card{
     background:var(--surface);
-    color:var(--navy-800);
+    backdrop-filter:blur(10px);
+    color:var(--text-1);
     border-radius:var(--radius-md);
-    border:1px solid var(--line);
-    border-left:3px solid var(--navy-700);
+    border:1px solid var(--border);
+    border-left:2px solid var(--gold);
     text-align:left;
     padding:14px 16px;
-    font-weight:600;
-    font-size:14px;
-    box-shadow:var(--shadow-sm);
+    font-weight:500;
+    font-size:13.5px;
 }
 
 .use-card:hover{
-    border-color:var(--navy-500);
-    border-left-color:var(--accent);
-    box-shadow:var(--shadow-md);
+    border-color:var(--border-strong);
+    border-left-color:var(--gold);
+    background:var(--surface-hover);
+    transform:translateX(3px);
 }
 
 /* ==========================================================
-   MINERAL SWATCH — titik warna kecil identitas tiap mineral
+   MINERAL SWATCH
    ========================================================== */
 
 .mineral-swatch{
     display:inline-block;
-    width:9px;
-    height:9px;
+    width:8px;
+    height:8px;
     border-radius:50%;
-    margin-right:7px;
+    margin-right:8px;
     vertical-align:middle;
-    box-shadow:0 0 0 2px rgba(15,23,42,.05);
 }
 
-.swatch-azurite{ background:var(--azurite); }
-.swatch-copper{ background:var(--copper); }
-.swatch-hematite{ background:var(--hematite); }
-.swatch-malachite{ background:var(--malachite); }
-.swatch-pyrite{ background:var(--pyrite); }
+.swatch-azurite{ background:var(--azurite); box-shadow:0 0 8px var(--azurite-glow); }
+.swatch-copper{ background:var(--copper); box-shadow:0 0 8px var(--copper-glow); }
+.swatch-hematite{ background:var(--hematite); box-shadow:0 0 8px var(--hematite-glow); }
+.swatch-malachite{ background:var(--malachite); box-shadow:0 0 8px var(--malachite-glow); }
+.swatch-pyrite{ background:var(--pyrite); box-shadow:0 0 8px var(--pyrite-glow); }
 
 .top-badge{
     display:inline-block;
     margin-left:8px;
-    padding:1px 8px;
-    font-size:10.5px;
-    font-weight:700;
-    letter-spacing:.4px;
+    padding:1px 9px;
+    font-family:"JetBrains Mono", monospace;
+    font-size:10px;
+    font-weight:600;
+    letter-spacing:.5px;
     text-transform:uppercase;
-    color:var(--accent);
-    background:var(--accent-soft);
+    color:var(--gold);
+    background:var(--gold-soft);
+    border:1px solid var(--gold-line);
     border-radius:5px;
     vertical-align:middle;
 }
 
 /* ==========================================================
-   LOADING INDICATOR
+   LOADING — animasi "scanning" tema analisis CNN
    ========================================================== */
 
 .mineral-loader{
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:10px;
-    padding:20px;
-    color:var(--slate-500);
-    font-size:14px;
-    font-weight:500;
+    gap:14px;
+    padding:26px;
+    color:var(--text-3);
+    font-family:"JetBrains Mono", monospace;
+    font-size:12.5px;
+    letter-spacing:.5px;
+    text-transform:uppercase;
 }
 
-.mineral-loader .spinner{
-    width:16px;
-    height:16px;
-    border:2px solid var(--line);
-    border-top-color:var(--accent);
+.mineral-loader .scan-ring{
+    position:relative;
+    width:22px;
+    height:22px;
+}
+
+.mineral-loader .scan-ring::before{
+    content:"";
+    position:absolute;
+    inset:0;
     border-radius:50%;
-    animation:spin .7s linear infinite;
+    border:2px solid rgba(255,255,255,.12);
+    border-top-color:var(--gold);
+    animation:ringSpin .8s linear infinite;
 }
 
 /* ==========================================================
-   MARKDOWN HEADINGS ( ### di dalam st.markdown )
+   MARKDOWN HEADINGS
    ========================================================== */
 
 [data-testid="stMarkdownContainer"] h3{
-    font-family:"Lexend","Inter",sans-serif;
-    color:var(--navy-800);
-    font-weight:600;
-    font-size:17px;
-    margin-top:2px;
+    font-family:"Playfair Display", serif;
+    color:var(--text-1);
+    font-weight:700;
+    font-size:18px;
+    margin-top:4px;
+}
+
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stMarkdownContainer"] li{
+    color:var(--text-2);
+}
+
+.data-mono{
+    font-family:"JetBrains Mono", monospace;
+    color:var(--text-1);
+    font-size:13.5px;
 }
 
 /* ==========================================================
@@ -689,10 +731,22 @@ hr{
 [data-testid="stVegaLiteChart"],
 [data-testid="stArrowVegaLiteChart"]{
     background:var(--surface);
+    backdrop-filter:blur(12px);
     border-radius:var(--radius-lg);
-    padding:14px;
-    border:1px solid var(--line);
-    box-shadow:var(--shadow-sm);
+    padding:16px;
+    border:1px solid var(--border);
+}
+
+/* ==========================================================
+   ALERTS (st.warning dsb.) supaya cocok tema gelap
+   ========================================================== */
+
+[data-testid="stAlert"]{
+    background:var(--surface) !important;
+    border:1px solid var(--border) !important;
+    border-radius:var(--radius-md);
+    color:var(--text-2) !important;
+    backdrop-filter:blur(10px);
 }
 
 /* ==========================================================
@@ -700,8 +754,8 @@ hr{
    ========================================================== */
 
 @media (max-width: 768px){
-    .main-title{ font-size:26px; }
-    .sub-title{ font-size:14px; padding:0 8px 20px; }
-    .prediction-card h2{ font-size:24px; }
-    .prediction-card{ padding:22px; }
+    .main-title{ font-size:30px; }
+    .sub-title{ font-size:12.5px; padding:0 10px; }
+    .prediction-card h2{ font-size:26px; }
+    .prediction-card{ padding:24px; }
 }
