@@ -51,6 +51,8 @@ if os.path.exists(css_path):
 
 st.markdown(
     """
+<div class="overline">Geological Specimen Analysis</div>
+
 <div class="main-title">
 Mineral Classification System
 </div>
