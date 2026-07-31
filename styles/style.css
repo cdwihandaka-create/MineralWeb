@@ -60,6 +60,12 @@ html, body, [class*="css"]{
         linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
     background-size:46px 46px;
+    animation:gridDrift 40s linear infinite;
+}
+
+@keyframes gridDrift{
+    from{ background-position:0 0, 0 0; }
+    to{ background-position:46px 46px, 46px 46px; }
 }
 
 body::before{
@@ -93,6 +99,24 @@ body::after{
     overflow:hidden;
 }
 
+.facet-field::before{
+    content:"";
+    position:absolute;
+    top:-60%;
+    left:-30%;
+    width:55%;
+    height:220%;
+    background:linear-gradient(100deg, transparent, rgba(217,177,104,.05), transparent);
+    transform:rotate(12deg) translateX(-60%);
+    animation:lightSweep 14s ease-in-out infinite;
+}
+
+@keyframes lightSweep{
+    0%,15%{ transform:rotate(12deg) translateX(-60%); }
+    50%{ transform:rotate(12deg) translateX(160%); }
+    100%{ transform:rotate(12deg) translateX(160%); }
+}
+
 .facet-field span{
     position:absolute;
     width:26px;
@@ -122,8 +146,9 @@ body::after{
 }
 
 @keyframes facetFloat{
-    0%,100%{ transform:rotate(45deg) translateY(0); }
-    50%{ transform:rotate(45deg) translateY(-10px); }
+    0%{ transform:rotate(45deg) translateY(0); }
+    50%{ transform:rotate(62deg) translateY(-12px); }
+    100%{ transform:rotate(45deg) translateY(0); }
 }
 
 .facet-field span{
