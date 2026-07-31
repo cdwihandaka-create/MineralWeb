@@ -123,8 +123,22 @@ if uploaded_file is not None:
     # Load Image
     image = Image.open(uploaded_file).convert("RGB")
 
-    # Predict
+    # Predict (dengan indikator loading bertema mineral)
+    loader = st.empty()
+
+    loader.markdown(
+        """
+<div class="mineral-loader">
+<div class="gem"></div>
+<span class="label">Analyzing mineral image...</span>
+</div>
+""",
+        unsafe_allow_html=True
+    )
+
     mineral, confidence, prediction = predict_image(image)
+
+    loader.empty()
 
     # Reference Image
     image_path = os.path.join(
@@ -153,16 +167,24 @@ Image Comparison
 
     with col1:
 
-        st.markdown("### Uploaded Image")
+        st.markdown(
+            '<div class="image-frame"><p class="image-label">Uploaded Image</p>',
+            unsafe_allow_html=True
+        )
 
         st.image(
             image,
             use_container_width=True
         )
 
+        st.markdown("</div>", unsafe_allow_html=True)
+
     with col2:
 
-        st.markdown("### Reference Image")
+        st.markdown(
+            '<div class="image-frame"><p class="image-label">Reference Image</p>',
+            unsafe_allow_html=True
+        )
 
         if os.path.exists(image_path):
 
@@ -174,6 +196,8 @@ Image Comparison
         else:
 
             st.warning("Reference image is not available.")
+
+        st.markdown("</div>", unsafe_allow_html=True)
 
     # ==========================================================
     # PREDICTION RESULT
@@ -210,6 +234,8 @@ Prediction Result
 
 <p>CNN Classification Result</p>
 
+<span class="confidence-badge">{confidence:.2f}% confidence</span>
+
 </div>
 """,
             unsafe_allow_html=True
@@ -228,19 +254,23 @@ Prediction Result
 
         if confidence >= 95:
             status = "Highly Confident"
+            status_class = "status-high"
 
         elif confidence >= 80:
             status = "Confident"
+            status_class = "status-good"
 
         elif confidence >= 60:
             status = "Moderate"
+            status_class = "status-moderate"
 
         else:
             status = "Low Confidence"
+            status_class = "status-low"
 
         st.markdown(
             f"""
-<div class="status-card">
+<div class="status-card {status_class}">
 {status}
 </div>
 """,
@@ -293,15 +323,19 @@ Classification Probability
 
     st.markdown("### Probability Distribution")
 
+    top_mineral = df.iloc[0]["Mineral"]
+
     for _, row in df.iterrows():
 
         col_left, col_right = st.columns([5, 1])
 
+        is_top = row["Mineral"] == top_mineral
+
         with col_left:
 
-            st.markdown(
-                f"**{row['Mineral']}**"
-            )
+            label = f"**{row['Mineral']}** 🏆" if is_top else f"**{row['Mineral']}**"
+
+            st.markdown(label)
 
             st.progress(
                 row["Probability (%)"] / 100
