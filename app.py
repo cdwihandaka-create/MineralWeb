@@ -157,8 +157,24 @@ if uploaded_file is not None:
 
     loader.empty()
 
-    mineral_style = MINERAL_STYLE.get(mineral, "")
+    # ==========================================================
+    # TENTUKAN TIER KEYAKINAN
+    # < 70%      -> tidak dikenali (unknown)
+    # 70% - 80%  -> perlu verifikasi manual
+    # >= 80%     -> hasil dianggap valid
+    # ==========================================================
 
+    UNKNOWN_THRESHOLD = 70
+    VERIFY_THRESHOLD = 80
+
+    if confidence < UNKNOWN_THRESHOLD:
+        tier = "unknown"
+    elif confidence < VERIFY_THRESHOLD:
+        tier = "verify"
+    else:
+        tier = "confident"
+
+    mineral_style = MINERAL_STYLE.get(mineral, "")
     image_path = os.path.join("assets", f"{mineral.lower()}.jpg")
 
     # ==========================================================
@@ -169,9 +185,8 @@ if uploaded_file is not None:
 
     st.markdown('<div class="section-title">Perbandingan Gambar</div>', unsafe_allow_html=True)
 
-    col1, col2 = st.columns(2)
+    if tier == "unknown":
 
-    with col1:
         st.markdown(
             '<div class="image-frame"><p class="image-label">Gambar Diunggah</p>',
             unsafe_allow_html=True
@@ -179,16 +194,31 @@ if uploaded_file is not None:
         st.image(image, use_container_width=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
-    with col2:
-        st.markdown(
-            '<div class="image-frame"><p class="image-label">Gambar Referensi</p>',
-            unsafe_allow_html=True
-        )
-        if os.path.exists(image_path):
-            st.image(image_path, use_container_width=True)
-        else:
-            st.warning("Gambar referensi tidak tersedia.")
-        st.markdown("</div>", unsafe_allow_html=True)
+        st.caption("Gambar referensi tidak ditampilkan karena hasil klasifikasi belum bisa dipastikan.")
+
+    else:
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.markdown(
+                '<div class="image-frame"><p class="image-label">Gambar Diunggah</p>',
+                unsafe_allow_html=True
+            )
+            st.image(image, use_container_width=True)
+            st.markdown("</div>", unsafe_allow_html=True)
+
+        with col2:
+            label = "Kandidat Referensi (Belum Terverifikasi)" if tier == "verify" else "Gambar Referensi"
+            st.markdown(
+                f'<div class="image-frame"><p class="image-label">{label}</p>',
+                unsafe_allow_html=True
+            )
+            if os.path.exists(image_path):
+                st.image(image_path, use_container_width=True)
+            else:
+                st.warning("Gambar referensi tidak tersedia.")
+            st.markdown("</div>", unsafe_allow_html=True)
 
     # ==========================================================
     # PREDICTION RESULT
@@ -201,8 +231,61 @@ if uploaded_file is not None:
     left, right = st.columns([3, 1], gap="large")
 
     with left:
-        st.markdown(
-            f"""
+
+        if tier == "unknown":
+
+            st.markdown(
+                f"""
+<div class="prediction-frame mineral-unknown">
+<div class="prediction-card mineral-unknown">
+
+<div class="scan"></div>
+
+<div class="eyebrow">Hasil Klasifikasi</div>
+
+<h2>Tidak Dikenali</h2>
+
+<p>Gambar tidak cocok dengan kelas manapun yang dikenali sistem</p>
+
+<hr>
+
+<span class="confidence-badge">Keyakinan tertinggi hanya {confidence:.2f}%</span>
+
+</div>
+</div>
+""",
+                unsafe_allow_html=True
+            )
+
+        elif tier == "verify":
+
+            st.markdown(
+                f"""
+<div class="prediction-frame mineral-verify">
+<div class="prediction-card mineral-verify">
+
+<div class="scan"></div>
+
+<div class="eyebrow">Hasil Klasifikasi</div>
+
+<h2>Perlu Verifikasi</h2>
+
+<p>Kandidat tertinggi: {mineral} — belum memenuhi ambang keyakinan minimum</p>
+
+<hr>
+
+<span class="confidence-badge">Tingkat keyakinan {confidence:.2f}%</span>
+
+</div>
+</div>
+""",
+                unsafe_allow_html=True
+            )
+
+        else:
+
+            st.markdown(
+                f"""
 <div class="prediction-frame mineral-{mineral_style}">
 <div class="prediction-card mineral-{mineral_style}">
 
@@ -221,20 +304,20 @@ if uploaded_file is not None:
 </div>
 </div>
 """,
-            unsafe_allow_html=True
-        )
+                unsafe_allow_html=True
+            )
 
     with right:
         st.metric(label="Tingkat Keyakinan", value=f"{confidence:.2f}%")
 
-        if confidence >= 95:
+        if tier == "unknown":
+            status, status_class = "Tidak Dikenali", "status-low"
+        elif tier == "verify":
+            status, status_class = "Perlu Verifikasi", "status-moderate"
+        elif confidence >= 95:
             status, status_class = "Sangat Yakin", "status-high"
-        elif confidence >= 80:
-            status, status_class = "Yakin", "status-good"
-        elif confidence >= 60:
-            status, status_class = "Cukup Yakin", "status-moderate"
         else:
-            status, status_class = "Kurang Yakin", "status-low"
+            status, status_class = "Yakin", "status-good"
 
         st.markdown(
             f'<div class="status-card {status_class}">{status}</div>',
@@ -242,6 +325,26 @@ if uploaded_file is not None:
         )
 
     st.progress(confidence / 100)
+
+    if tier == "unknown":
+        st.markdown(
+            '<div class="caveat-banner danger">'
+            '<span class="icon">✕</span>'
+            '<span>Sistem tidak dapat memastikan gambar ini termasuk salah satu dari 5 kelas mineral yang dikenali '
+            '(Azurite, Copper, Hematite, Malachite, Pyrite). Kemungkinan gambar berasal dari luar cakupan dataset, '
+            'kualitas gambar kurang jelas, atau objek bukan mineral.</span>'
+            '</div>',
+            unsafe_allow_html=True
+        )
+    elif tier == "verify":
+        st.markdown(
+            '<div class="caveat-banner warn">'
+            '<span class="icon">!</span>'
+            '<span>Tingkat keyakinan berada di zona abu-abu (70–80%). Informasi di bawah ini mengacu pada kandidat '
+            'dengan probabilitas tertinggi, namun disarankan verifikasi manual sebelum dijadikan kesimpulan akhir.</span>'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
     # ==========================================================
     # CLASSIFICATION PROBABILITY
@@ -272,7 +375,12 @@ if uploaded_file is not None:
         swatch = MINERAL_STYLE.get(row["Mineral"], "")
 
         with col_left:
-            badge = " <span class='top-badge'>Paling Cocok</span>" if is_top else ""
+            if is_top and tier == "confident":
+                badge = " <span class='top-badge'>Paling Cocok</span>"
+            elif is_top:
+                badge = " <span class='top-badge'>Kandidat Tertinggi</span>"
+            else:
+                badge = ""
             st.markdown(
                 f"<span class='mineral-swatch swatch-{swatch}'></span>"
                 f"**{row['Mineral']}**{badge}",
@@ -299,47 +407,70 @@ if uploaded_file is not None:
 
     st.markdown('<div class="section-title">Informasi Mineral</div>', unsafe_allow_html=True)
 
-    info = MINERAL_INFO[mineral]
+    if tier == "unknown":
 
-    left, right = st.columns(2)
-
-    with left:
         st.markdown(
-            '<div class="info-card"><h3>Informasi Umum</h3>',
+            '<div class="caveat-banner danger">'
+            '<span class="icon">✕</span>'
+            '<span>Informasi mineral tidak ditampilkan karena hasil klasifikasi belum bisa dipastikan. '
+            'Silakan coba unggah gambar lain dengan pencahayaan dan sudut yang lebih jelas.</span>'
+            '</div>',
             unsafe_allow_html=True
         )
-        st.markdown(f"**Rumus Kimia**  \n<span class='data-mono'>{info['formula']}</span>", unsafe_allow_html=True)
-        st.markdown(f"**Warna**  \n{info['color']}")
-        st.markdown(f"**Tingkat Kekerasan**  \n<span class='data-mono'>{info['hardness']}</span>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
 
-    with right:
+    else:
+
+        if tier == "verify":
+            st.markdown(
+                '<div class="caveat-banner warn">'
+                '<span class="icon">!</span>'
+                f'<span>Informasi berikut berdasarkan kandidat <strong>{mineral}</strong> dengan probabilitas '
+                'tertinggi, namun belum terverifikasi sepenuhnya.</span>'
+                '</div>',
+                unsafe_allow_html=True
+            )
+
+        info = MINERAL_INFO[mineral]
+
+        left, right = st.columns(2)
+
+        with left:
+            st.markdown(
+                '<div class="info-card"><h3>Informasi Umum</h3>',
+                unsafe_allow_html=True
+            )
+            st.markdown(f"**Rumus Kimia**  \n<span class='data-mono'>{info['formula']}</span>", unsafe_allow_html=True)
+            st.markdown(f"**Warna**  \n{info['color']}")
+            st.markdown(f"**Tingkat Kekerasan**  \n<span class='data-mono'>{info['hardness']}</span>", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
+
+        with right:
+            st.markdown(
+                '<div class="info-card"><h3>Negara Penghasil</h3>',
+                unsafe_allow_html=True
+            )
+            for country in info["source"]:
+                st.markdown(f"• {country}")
+            st.markdown("</div>", unsafe_allow_html=True)
+
+        st.markdown("---")
+
+        st.markdown("### Deskripsi")
+
         st.markdown(
-            '<div class="info-card"><h3>Negara Penghasil</h3>',
+            f'<div class="description-card">{info["description"]}</div>',
             unsafe_allow_html=True
         )
-        for country in info["source"]:
-            st.markdown(f"• {country}")
-        st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("---")
+        st.markdown("---")
 
-    st.markdown("### Deskripsi")
+        st.markdown("### Berguna untuk")
 
-    st.markdown(
-        f'<div class="description-card">{info["description"]}</div>',
-        unsafe_allow_html=True
-    )
+        use_cols = st.columns(len(info["uses"]))
 
-    st.markdown("---")
-
-    st.markdown("### Berguna untuk")
-
-    use_cols = st.columns(len(info["uses"]))
-
-    for col, item in zip(use_cols, info["uses"]):
-        with col:
-            st.markdown(f'<div class="use-card">{item}</div>', unsafe_allow_html=True)
+        for col, item in zip(use_cols, info["uses"]):
+            with col:
+                st.markdown(f'<div class="use-card">{item}</div>', unsafe_allow_html=True)
 
     # ==========================================================
     # DOWNLOAD REPORT
@@ -347,7 +478,38 @@ if uploaded_file is not None:
 
     st.divider()
 
-    result = f"""
+    if tier == "unknown":
+
+        result = f"""
+SISTEM KLASIFIKASI MINERAL
+
+Tanggal Analisis:
+{datetime.now().strftime("%d-%m-%Y %H:%M:%S")}
+
+Status:
+TIDAK DIKENALI
+
+Catatan:
+Sistem tidak dapat mengklasifikasikan gambar ke salah satu dari 5 kelas
+mineral yang dikenali (Azurite, Copper, Hematite, Malachite, Pyrite).
+
+Kandidat tertinggi (referensi saja, tidak dapat dipastikan):
+{top_mineral} ({df.iloc[0]['Probabilitas (%)']:.2f}%)
+"""
+
+        file_name = "Laporan_Prediksi_TidakDikenali.txt"
+
+    else:
+
+        info = MINERAL_INFO[mineral]
+
+        verify_note = (
+            "\nCatatan:\nHasil ini berada pada zona keyakinan 70-80% dan disarankan\n"
+            "untuk diverifikasi secara manual sebelum dijadikan kesimpulan akhir.\n"
+            if tier == "verify" else ""
+        )
+
+        result = f"""
 SISTEM KLASIFIKASI MINERAL
 
 Tanggal Prediksi:
@@ -358,7 +520,7 @@ Mineral Terprediksi:
 
 Tingkat Keyakinan:
 {confidence:.2f}%
-
+{verify_note}
 Rumus Kimia:
 {info['formula']}
 
@@ -378,10 +540,12 @@ Kegunaan:
 {', '.join(info['uses'])}
 """
 
+        file_name = f"Laporan_Prediksi_{mineral}.txt"
+
     st.download_button(
         label="Unduh Laporan Prediksi",
         data=result,
-        file_name=f"Laporan_Prediksi_{mineral}.txt",
+        file_name=file_name,
         mime="text/plain",
         use_container_width=True
     )
