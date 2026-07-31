@@ -60,7 +60,7 @@ body,
 }
 
 /* ==========================================================
-   ANIMATION
+   ANIMATION LIBRARY
    ========================================================== */
 
 @keyframes fadeUp{
@@ -68,17 +68,77 @@ body,
     to{ opacity:1; transform:translateY(0); }
 }
 
+@keyframes fadeIn{
+    from{ opacity:0; }
+    to{ opacity:1; }
+}
+
+@keyframes scaleIn{
+    from{ opacity:0; transform:scale(.92); }
+    to{ opacity:1; transform:scale(1); }
+}
+
 @keyframes pulseGlow{
     0%,100%{ box-shadow:var(--shadow-brand); }
-    50%{ box-shadow:0 22px 55px rgba(37,99,235,.32); }
+    50%{ box-shadow:0 26px 60px rgba(37,99,235,.35); }
+}
+
+@keyframes floatY{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-6px); }
+}
+
+@keyframes shimmer{
+    0%{ background-position:-400px 0; }
+    100%{ background-position:400px 0; }
+}
+
+@keyframes shimmerText{
+    0%{ background-position:0% 50%; }
+    100%{ background-position:200% 50%; }
+}
+
+@keyframes spinSlow{
+    from{ transform:rotate(0deg); }
+    to{ transform:rotate(360deg); }
+}
+
+@keyframes sparklePop{
+    0%{ opacity:0; transform:scale(0) rotate(0deg); }
+    50%{ opacity:1; }
+    100%{ opacity:0; transform:scale(1) rotate(90deg); }
+}
+
+@keyframes progressStripe{
+    from{ background-position:0 0; }
+    to{ background-position:40px 0; }
 }
 
 /* Scoped transitions only where needed — avoids sluggish global transitions */
 button, .stButton>button, .stDownloadButton>button,
 [data-testid="metric-container"], .upload-container,
-[data-testid="stFileUploaderDropzone"], img, .use-card{
-    transition:transform .22s ease, box-shadow .22s ease, background-color .22s ease, border-color .22s ease;
+[data-testid="stFileUploaderDropzone"], img, .use-card,
+.info-card, .status-card, .description-card{
+    transition:transform .22s cubic-bezier(.22,1,.36,1), box-shadow .22s ease, background-color .22s ease, border-color .22s ease;
 }
+
+/* Staggered entrance for repeated elements (metric cards, use-cards, columns) */
+.block-container [data-testid="stHorizontalBlock"] > div{
+    animation:fadeUp .6s cubic-bezier(.22,1,.36,1) both;
+}
+.block-container [data-testid="stHorizontalBlock"] > div:nth-child(1){ animation-delay:.05s; }
+.block-container [data-testid="stHorizontalBlock"] > div:nth-child(2){ animation-delay:.12s; }
+.block-container [data-testid="stHorizontalBlock"] > div:nth-child(3){ animation-delay:.19s; }
+.block-container [data-testid="stHorizontalBlock"] > div:nth-child(4){ animation-delay:.26s; }
+.block-container [data-testid="stHorizontalBlock"] > div:nth-child(5){ animation-delay:.33s; }
+
+/* Utility classes — add these to st.markdown wrappers for extra motion */
+.anim-fade-in{ animation:fadeIn .5s ease both; }
+.anim-scale-in{ animation:scaleIn .45s cubic-bezier(.22,1,.36,1) both; }
+.anim-float{ animation:floatY 3.2s ease-in-out infinite; }
+.anim-delay-1{ animation-delay:.1s; }
+.anim-delay-2{ animation-delay:.2s; }
+.anim-delay-3{ animation-delay:.3s; }
 
 /* ==========================================================
    HEADER
@@ -92,10 +152,12 @@ button, .stButton>button, .stDownloadButton>button,
     color:var(--ink-700);
     letter-spacing:-1px;
     margin-bottom:8px;
-    background:linear-gradient(135deg, var(--brand-900), var(--brand-600) 60%, var(--accent-500));
+    background:linear-gradient(120deg, var(--brand-900), var(--brand-600) 40%, var(--accent-500) 55%, var(--brand-600) 70%, var(--brand-900));
+    background-size:300% auto;
     -webkit-background-clip:text;
     background-clip:text;
     -webkit-text-fill-color:transparent;
+    animation:fadeIn .8s ease both, shimmerText 6s linear infinite;
 }
 
 .sub-title{
@@ -149,10 +211,11 @@ button, .stButton>button, .stDownloadButton>button,
     border-radius:var(--radius-lg);
     padding:18px 20px;
     box-shadow:var(--shadow-sm);
+    animation:scaleIn .5s cubic-bezier(.22,1,.36,1) both;
 }
 
 [data-testid="metric-container"]:hover{
-    transform:translateY(-5px);
+    transform:translateY(-6px) scale(1.02);
     border-color:var(--brand-600);
     box-shadow:var(--shadow-md);
 }
@@ -195,7 +258,13 @@ button, .stButton>button, .stDownloadButton>button,
 
 [data-testid="stFileUploaderDropzone"]:hover{
     border-color:var(--brand-600) !important;
-    background:#F8FBFF;
+    background:linear-gradient(90deg, #F8FBFF 0%, #EEF4FF 50%, #F8FBFF 100%);
+    background-size:800px 100%;
+    animation:shimmer 2.2s linear infinite;
+}
+
+[data-testid="stFileUploaderDropzone"] svg{
+    animation:floatY 2.8s ease-in-out infinite;
 }
 
 /* ==========================================================
@@ -204,6 +273,8 @@ button, .stButton>button, .stDownloadButton>button,
 
 .stButton>button,
 .stDownloadButton>button{
+    position:relative;
+    overflow:hidden;
     border-radius:var(--radius-sm);
     border:none;
     background:var(--brand-600);
@@ -214,16 +285,32 @@ button, .stButton>button, .stDownloadButton>button,
     box-shadow:0 8px 18px rgba(37,99,235,.20);
 }
 
+.stButton>button::before,
+.stDownloadButton>button::before{
+    content:"";
+    position:absolute;
+    top:0; left:-75%;
+    width:50%; height:100%;
+    background:linear-gradient(120deg, transparent, rgba(255,255,255,.35), transparent);
+    transform:skewX(-20deg);
+    transition:left .55s ease;
+}
+
+.stButton>button:hover::before,
+.stDownloadButton>button:hover::before{
+    left:125%;
+}
+
 .stButton>button:hover,
 .stDownloadButton>button:hover{
     background:var(--brand-700);
     transform:translateY(-2px);
-    box-shadow:0 12px 24px rgba(37,99,235,.28);
+    box-shadow:0 12px 26px rgba(37,99,235,.32);
 }
 
 .stButton>button:active,
 .stDownloadButton>button:active{
-    transform:translateY(0);
+    transform:translateY(0) scale(.98);
 }
 
 /* ==========================================================
@@ -244,6 +331,10 @@ img:hover{
 
 .stProgress>div>div>div{
     background:linear-gradient(90deg, var(--brand-600), var(--accent-500));
+    background-image:linear-gradient(90deg, var(--brand-600), var(--accent-500)),
+        repeating-linear-gradient(45deg, rgba(255,255,255,.18) 0 10px, transparent 10px 20px);
+    background-size:100% 100%, 40px 40px;
+    animation:progressStripe 1.2s linear infinite;
     border-radius:8px;
 }
 
@@ -292,7 +383,7 @@ hr{
     border-radius:var(--radius-xl);
     padding:36px 38px;
     box-shadow:var(--shadow-brand);
-    animation:pulseGlow 4s ease-in-out infinite;
+    animation:scaleIn .55s cubic-bezier(.22,1,.36,1) both, pulseGlow 4s ease-in-out .55s infinite;
 }
 
 .prediction-card::after{
@@ -303,6 +394,18 @@ hr{
     width:260px;
     height:260px;
     background:radial-gradient(circle, rgba(217,119,6,.35), transparent 70%);
+    pointer-events:none;
+    animation:floatY 5s ease-in-out infinite;
+}
+
+.prediction-card::before{
+    content:"✦";
+    position:absolute;
+    top:18px;
+    left:22px;
+    font-size:20px;
+    color:rgba(255,255,255,.55);
+    animation:sparklePop 2.6s ease-in-out infinite;
     pointer-events:none;
 }
 
@@ -345,6 +448,123 @@ hr{
     box-shadow:var(--shadow-sm);
     font-weight:600;
     color:var(--brand-600);
+    animation:scaleIn .5s cubic-bezier(.22,1,.36,1) both;
+}
+
+.status-card.status-high{
+    color:#059669;
+    background:#ECFDF5;
+    border-color:#A7F3D0;
+}
+
+.status-card.status-good{
+    color:var(--brand-700);
+    background:#EFF6FF;
+    border-color:#BFDBFE;
+}
+
+.status-card.status-moderate{
+    color:var(--accent-600);
+    background:#FFFBEB;
+    border-color:#FDE68A;
+}
+
+.status-card.status-low{
+    color:#DC2626;
+    background:#FEF2F2;
+    border-color:#FECACA;
+}
+
+/* ==========================================================
+   EMPTY STATE (belum ada gambar diupload)
+   ========================================================== */
+
+.upload-box{
+    text-align:center;
+    background:var(--surface);
+    border:2px dashed #CBD5E1;
+    border-radius:var(--radius-xl);
+    padding:60px 30px;
+    box-shadow:var(--shadow-sm);
+    animation:fadeUp .6s cubic-bezier(.22,1,.36,1) both;
+}
+
+.upload-box::before{
+    content:"◆";
+    display:block;
+    font-size:38px;
+    color:var(--brand-500);
+    margin-bottom:14px;
+    animation:floatY 3s ease-in-out infinite;
+}
+
+.upload-box h2{
+    font-family:"Lexend","Inter",sans-serif;
+    color:var(--ink-700);
+    margin-bottom:8px;
+}
+
+.upload-box p{
+    color:var(--ink-400);
+    margin:0;
+}
+
+/* ==========================================================
+   IMAGE FRAME (perbandingan gambar upload vs referensi)
+   ========================================================== */
+
+.image-frame{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:14px;
+    box-shadow:var(--shadow-sm);
+    animation:fadeUp .6s cubic-bezier(.22,1,.36,1) both;
+}
+
+.image-frame:hover{
+    box-shadow:var(--shadow-md);
+    border-color:var(--brand-500);
+}
+
+.image-frame .image-label{
+    text-align:center;
+    font-weight:700;
+    font-family:"Lexend","Inter",sans-serif;
+    color:var(--ink-700);
+    margin-bottom:10px;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.image-frame img{
+    border-radius:calc(var(--radius-lg) - 6px);
+}
+
+/* ==========================================================
+   MARKDOWN HEADINGS ( ### di dalam st.markdown )
+   ========================================================== */
+
+[data-testid="stMarkdownContainer"] h3{
+    font-family:"Lexend","Inter",sans-serif;
+    color:var(--ink-700);
+    font-weight:700;
+    font-size:20px;
+    margin-top:4px;
+}
+
+/* ==========================================================
+   CHART CONTAINER
+   ========================================================== */
+
+[data-testid="stVegaLiteChart"],
+[data-testid="stArrowVegaLiteChart"]{
+    background:var(--surface);
+    border-radius:var(--radius-lg);
+    padding:16px;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-sm);
 }
 
 /* ==========================================================
@@ -358,11 +578,13 @@ hr{
     box-shadow:var(--shadow-sm);
     border:1px solid var(--line);
     height:100%;
+    animation:fadeUp .6s cubic-bezier(.22,1,.36,1) both;
 }
 
 .info-card:hover{
     box-shadow:var(--shadow-md);
-    transform:translateY(-3px);
+    transform:translateY(-4px);
+    border-color:var(--brand-500);
 }
 
 .info-card h3{
@@ -398,11 +620,39 @@ hr{
     padding:18px;
     font-weight:600;
     box-shadow:0 10px 22px rgba(37,99,235,.20);
+    animation:scaleIn .5s cubic-bezier(.22,1,.36,1) both;
 }
 
 .use-card:hover{
-    transform:translateY(-4px);
+    transform:translateY(-5px) rotate(-1deg);
     background:var(--brand-700);
+    box-shadow:0 16px 30px rgba(37,99,235,.30);
+}
+
+/* ==========================================================
+   LOADING SPINNER (pakai saat model sedang memproses)
+   ========================================================== */
+
+.mineral-loader{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    padding:24px;
+}
+
+.mineral-loader .gem{
+    width:26px;
+    height:26px;
+    background:linear-gradient(135deg, var(--brand-600), var(--accent-500));
+    clip-path:polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    animation:spinSlow 1.4s linear infinite, floatY 1.4s ease-in-out infinite;
+}
+
+.mineral-loader .label{
+    color:var(--ink-500);
+    font-weight:600;
+    font-size:15px;
 }
 
 /* ==========================================================
