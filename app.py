@@ -129,8 +129,8 @@ if uploaded_file is not None:
     loader.markdown(
         """
 <div class="mineral-loader">
-<div class="gem"></div>
-<span class="label">Analyzing mineral image...</span>
+<div class="spinner"></div>
+<span>Analyzing mineral image...</span>
 </div>
 """,
         unsafe_allow_html=True
@@ -333,9 +333,9 @@ Classification Probability
 
         with col_left:
 
-            label = f"**{row['Mineral']}** 🏆" if is_top else f"**{row['Mineral']}**"
+            label = f"**{row['Mineral']}** <span class='top-badge'>Top Match</span>" if is_top else f"**{row['Mineral']}**"
 
-            st.markdown(label)
+            st.markdown(label, unsafe_allow_html=True)
 
             st.progress(
                 row["Probability (%)"] / 100
