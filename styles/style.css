@@ -70,6 +70,17 @@ body::before{
     animation:ambientDrift 18s ease-in-out infinite;
 }
 
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    opacity:.05;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
 @keyframes ambientDrift{
     0%,100%{ opacity:1; transform:translateY(0) scale(1); }
     50%{ opacity:.75; transform:translateY(-14px) scale(1.03); }
@@ -80,6 +91,7 @@ body::before{
     padding-top:2.4rem;
     padding-bottom:3.5rem;
     animation:pageIn .55s cubic-bezier(.22,1,.36,1) both;
+    counter-reset:section-counter;
 }
 
 @keyframes pageIn{
@@ -133,6 +145,17 @@ button, .stButton>button, .stDownloadButton>button,
 /* ==========================================================
    HEADER
    ========================================================== */
+
+.overline{
+    text-align:center;
+    font-family:"JetBrains Mono", monospace;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:14px;
+}
 
 .main-title{
     text-align:center;
@@ -189,18 +212,22 @@ button, .stButton>button, .stDownloadButton>button,
     padding-bottom:12px;
     border-bottom:1px solid var(--border);
     display:flex;
-    align-items:center;
-    gap:10px;
+    align-items:baseline;
+    gap:12px;
+    counter-increment:section-counter;
 }
 
 .section-title::before{
-    content:"";
-    width:8px;
-    height:8px;
-    border-radius:2px;
-    transform:rotate(45deg);
-    background:var(--gold);
-    box-shadow:0 0 10px var(--gold-line);
+    content:counter(section-counter, decimal-leading-zero);
+    font-family:"JetBrains Mono", monospace;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:1px;
+    color:var(--gold);
+    background:var(--gold-soft);
+    border:1px solid var(--gold-line);
+    border-radius:5px;
+    padding:2px 7px;
     flex-shrink:0;
 }
 
@@ -350,6 +377,19 @@ hr{
     border:none;
     border-top:1px solid var(--border);
     margin:34px 0;
+    position:relative;
+}
+
+hr::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:-4px;
+    width:7px;
+    height:7px;
+    transform:translateX(-50%) rotate(45deg);
+    background:var(--bg-0);
+    border:1px solid var(--border-strong);
 }
 
 /* ==========================================================
@@ -536,6 +576,7 @@ hr{
    ========================================================== */
 
 .image-frame{
+    position:relative;
     background:var(--surface);
     backdrop-filter:blur(12px);
     border:1px solid var(--border);
@@ -545,6 +586,34 @@ hr{
 
 .image-frame:hover{
     border-color:var(--border-strong);
+}
+
+.image-frame::before,
+.image-frame::after{
+    content:"";
+    position:absolute;
+    width:16px;
+    height:16px;
+    opacity:0;
+    transition:opacity .25s ease;
+    pointer-events:none;
+}
+
+.image-frame::before{
+    top:6px; left:6px;
+    border-top:2px solid var(--gold);
+    border-left:2px solid var(--gold);
+}
+
+.image-frame::after{
+    bottom:6px; right:6px;
+    border-bottom:2px solid var(--gold);
+    border-right:2px solid var(--gold);
+}
+
+.image-frame:hover::before,
+.image-frame:hover::after{
+    opacity:.9;
 }
 
 .image-frame .image-label{
@@ -699,6 +768,16 @@ hr{
     border:2px solid rgba(255,255,255,.12);
     border-top-color:var(--gold);
     animation:ringSpin .8s linear infinite;
+}
+
+.mineral-loader .scan-ring::after{
+    content:"";
+    position:absolute;
+    inset:5px;
+    border-radius:50%;
+    border:2px solid rgba(255,255,255,.08);
+    border-bottom-color:var(--azurite);
+    animation:ringSpin 1.3s linear infinite reverse;
 }
 
 /* ==========================================================
