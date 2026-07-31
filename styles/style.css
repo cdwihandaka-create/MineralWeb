@@ -641,6 +641,8 @@ hr::after{
 .prediction-frame.mineral-hematite{ --ring-color:var(--hematite); }
 .prediction-frame.mineral-malachite{ --ring-color:var(--malachite); }
 .prediction-frame.mineral-pyrite{ --ring-color:var(--pyrite); }
+.prediction-frame.mineral-verify{ --ring-color:var(--warning); }
+.prediction-frame.mineral-unknown{ --ring-color:#8B93A6; }
 
 .prediction-card{
     position:relative;
@@ -725,6 +727,14 @@ hr::after{
 .prediction-card.mineral-hematite{ --mineral-color:var(--hematite); --mineral-glow:var(--hematite-glow); --mineral-soft:rgba(229,102,92,.14); --pulse-color:var(--hematite-glow); }
 .prediction-card.mineral-malachite{ --mineral-color:var(--malachite); --mineral-glow:var(--malachite-glow); --mineral-soft:rgba(75,201,141,.14); --pulse-color:var(--malachite-glow); }
 .prediction-card.mineral-pyrite{ --mineral-color:var(--pyrite); --mineral-glow:var(--pyrite-glow); --mineral-soft:rgba(233,198,101,.14); --pulse-color:var(--pyrite-glow); }
+.prediction-card.mineral-verify{ --mineral-color:var(--warning); --mineral-glow:var(--warning-line); --mineral-soft:var(--warning-bg); --pulse-color:var(--warning-line); }
+.prediction-card.mineral-unknown{ --mineral-color:#8B93A6; --mineral-glow:rgba(139,147,166,.35); --mineral-soft:rgba(139,147,166,.14); --pulse-color:rgba(139,147,166,.3); }
+
+/* Kartu 'perlu verifikasi' / 'tidak dikenali' — border putus-putus, penanda visual berbeda dari hasil confident */
+.prediction-card.mineral-verify,
+.prediction-card.mineral-unknown{
+    border-style:dashed;
+}
 
 /* ==========================================================
    STATUS CARD
@@ -900,6 +910,42 @@ hr::after{
 /* ==========================================================
    DESCRIPTION
    ========================================================== */
+
+/* ==========================================================
+   CAVEAT BANNER (peringatan verifikasi / tidak dikenali)
+   ========================================================== */
+
+.caveat-banner{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:16px 18px;
+    border-radius:var(--radius-md);
+    font-size:13.5px;
+    line-height:1.7;
+    margin-bottom:18px;
+}
+
+.caveat-banner.warn{
+    background:var(--warning-bg);
+    border:1px solid var(--warning-line);
+    color:var(--text-1);
+}
+
+.caveat-banner.danger{
+    background:var(--danger-bg);
+    border:1px solid var(--danger-line);
+    color:var(--text-1);
+}
+
+.caveat-banner .icon{
+    font-family:"JetBrains Mono", monospace;
+    font-weight:700;
+    flex-shrink:0;
+}
+
+.caveat-banner.warn .icon{ color:var(--warning); }
+.caveat-banner.danger .icon{ color:var(--danger); }
 
 .description-card{
     background:var(--surface);
