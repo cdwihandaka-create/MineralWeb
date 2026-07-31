@@ -19,6 +19,18 @@ st.set_page_config(
 )
 
 # ==========================================================
+# MINERAL COLOR MAP (dipakai untuk styling dinamis)
+# ==========================================================
+
+MINERAL_STYLE = {
+    "Azurite": "azurite",
+    "Copper": "copper",
+    "Hematite": "hematite",
+    "Malachite": "malachite",
+    "Pyrite": "pyrite",
+}
+
+# ==========================================================
 # LOAD CSS
 # ==========================================================
 
@@ -123,7 +135,7 @@ if uploaded_file is not None:
     # Load Image
     image = Image.open(uploaded_file).convert("RGB")
 
-    # Predict (dengan indikator loading bertema mineral)
+    # Predict (dengan indikator loading)
     loader = st.empty()
 
     loader.markdown(
@@ -139,6 +151,8 @@ if uploaded_file is not None:
     mineral, confidence, prediction = predict_image(image)
 
     loader.empty()
+
+    mineral_style = MINERAL_STYLE.get(mineral, "")
 
     # Reference Image
     image_path = os.path.join(
@@ -217,14 +231,14 @@ Prediction Result
     left, right = st.columns([3, 1], gap="large")
 
     # ----------------------------------------------------------
-    # Prediction Card
+    # Prediction Card (warna mengikuti jenis mineral)
     # ----------------------------------------------------------
 
     with left:
 
         st.markdown(
             f"""
-<div class="prediction-card">
+<div class="prediction-card mineral-{mineral_style}">
 
 <h2>{mineral}</h2>
 
@@ -318,7 +332,7 @@ Classification Probability
     )
 
     # ----------------------------------------------------------
-    # Probability Distribution
+    # Probability Distribution (dengan swatch warna tiap mineral)
     # ----------------------------------------------------------
 
     st.markdown("### Probability Distribution")
@@ -330,12 +344,17 @@ Classification Probability
         col_left, col_right = st.columns([5, 1])
 
         is_top = row["Mineral"] == top_mineral
+        swatch = MINERAL_STYLE.get(row["Mineral"], "")
 
         with col_left:
 
-            label = f"**{row['Mineral']}** <span class='top-badge'>Top Match</span>" if is_top else f"**{row['Mineral']}**"
+            badge = " <span class='top-badge'>Top Match</span>" if is_top else ""
 
-            st.markdown(label, unsafe_allow_html=True)
+            st.markdown(
+                f"<span class='mineral-swatch swatch-{swatch}'></span>"
+                f"**{row['Mineral']}**{badge}",
+                unsafe_allow_html=True
+            )
 
             st.progress(
                 row["Probability (%)"] / 100
