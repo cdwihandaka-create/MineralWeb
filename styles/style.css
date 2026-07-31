@@ -79,53 +79,77 @@ body::after{
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
-/* ---- Orb ambient: benar-benar mengambang berpindah, bukan cuma napas ---- */
+/* ---- Orb ambient: mengambang berpindah + iridescence ala kilau mineral ---- */
 
 .glow-orb{
     position:absolute;
     border-radius:50%;
-    filter:blur(90px);
+    filter:blur(90px) hue-rotate(0deg);
     opacity:.55;
-    will-change:transform;
+    mix-blend-mode:screen;
+    will-change:transform, filter;
 }
 
 .glow-orb.orb-azurite{
     width:440px; height:440px;
     top:-12%; left:2%;
     background:radial-gradient(circle, var(--azurite), transparent 70%);
-    animation:orbDrift1 24s ease-in-out infinite;
+    animation:orbDrift1 26s cubic-bezier(.45,.05,.55,.95) infinite;
 }
 
 .glow-orb.orb-gold{
     width:400px; height:400px;
     top:2%; right:-4%;
     background:radial-gradient(circle, var(--gold), transparent 70%);
-    animation:orbDrift2 28s ease-in-out infinite;
+    animation:orbDrift2 31s cubic-bezier(.45,.05,.55,.95) infinite;
 }
 
 .glow-orb.orb-malachite{
     width:460px; height:460px;
     bottom:-16%; left:32%;
     background:radial-gradient(circle, var(--malachite), transparent 70%);
-    animation:orbDrift3 32s ease-in-out infinite;
+    animation:orbDrift3 35s cubic-bezier(.45,.05,.55,.95) infinite;
 }
 
 @keyframes orbDrift1{
-    0%,100%{ transform:translate(0,0) scale(1); }
-    30%{ transform:translate(80px,55px) scale(1.1); }
-    65%{ transform:translate(-45px,95px) scale(.93); }
+    0%,100%{ transform:translate(0,0) scale(1); filter:blur(90px) hue-rotate(0deg); }
+    30%{ transform:translate(80px,55px) scale(1.1); filter:blur(90px) hue-rotate(30deg); }
+    65%{ transform:translate(-45px,95px) scale(.93); filter:blur(90px) hue-rotate(-18deg); }
 }
 
 @keyframes orbDrift2{
-    0%,100%{ transform:translate(0,0) scale(1); }
-    35%{ transform:translate(-70px,75px) scale(.9); }
-    70%{ transform:translate(-110px,-35px) scale(1.08); }
+    0%,100%{ transform:translate(0,0) scale(1); filter:blur(90px) hue-rotate(0deg); }
+    35%{ transform:translate(-70px,75px) scale(.9); filter:blur(90px) hue-rotate(-24deg); }
+    70%{ transform:translate(-110px,-35px) scale(1.08); filter:blur(90px) hue-rotate(20deg); }
 }
 
 @keyframes orbDrift3{
-    0%,100%{ transform:translate(0,0) scale(1); }
-    40%{ transform:translate(55px,-65px) scale(1.06); }
-    75%{ transform:translate(110px,25px) scale(.92); }
+    0%,100%{ transform:translate(0,0) scale(1); filter:blur(90px) hue-rotate(0deg); }
+    40%{ transform:translate(55px,-65px) scale(1.06); filter:blur(90px) hue-rotate(22deg); }
+    75%{ transform:translate(110px,25px) scale(.92); filter:blur(90px) hue-rotate(-26deg); }
+}
+
+/* ---- Aurora ring: gradasi 5 warna mineral berputar sangat pelan di belakang header ---- */
+
+.aurora{
+    position:absolute;
+    top:-30%;
+    left:50%;
+    width:920px;
+    height:920px;
+    margin-left:-460px;
+    border-radius:50%;
+    background:conic-gradient(from 0deg,
+        var(--azurite), var(--malachite), var(--pyrite),
+        var(--copper), var(--hematite), var(--azurite));
+    filter:blur(150px);
+    opacity:.10;
+    animation:auroraSpin 55s linear infinite;
+}
+
+@keyframes auroraSpin{
+    from{ transform:rotate(0deg); }
+    to{ transform:rotate(360deg); }
 }
 
 /* ---- Dua sapuan cahaya, arah & warna berbeda ---- */
