@@ -52,9 +52,14 @@ st.markdown(
 <div class="glow-orb orb-azurite"></div>
 <div class="glow-orb orb-gold"></div>
 <div class="glow-orb orb-malachite"></div>
-<span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+<span></span><span></span><span></span><span></span><span></span>
+<span></span><span></span><span></span><span></span><span></span>
 <span class="twinkle"></span><span class="twinkle"></span><span class="twinkle"></span>
 <span class="twinkle"></span><span class="twinkle"></span><span class="twinkle"></span>
+<span class="twinkle"></span><span class="twinkle"></span><span class="twinkle"></span>
+<span class="twinkle"></span>
+<span class="dust"></span><span class="dust"></span><span class="dust"></span>
+<span class="dust"></span><span class="dust"></span><span class="dust"></span>
 </div>
 """,
     unsafe_allow_html=True
@@ -198,6 +203,7 @@ if uploaded_file is not None:
     with left:
         st.markdown(
             f"""
+<div class="prediction-frame mineral-{mineral_style}">
 <div class="prediction-card mineral-{mineral_style}">
 
 <div class="scan"></div>
@@ -212,6 +218,7 @@ if uploaded_file is not None:
 
 <span class="confidence-badge">Tingkat keyakinan {confidence:.2f}%</span>
 
+</div>
 </div>
 """,
             unsafe_allow_html=True
