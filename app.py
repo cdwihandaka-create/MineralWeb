@@ -45,6 +45,15 @@ if os.path.exists(css_path):
             unsafe_allow_html=True
         )
 
+st.markdown(
+    """
+<div class="facet-field">
+<span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+</div>
+""",
+    unsafe_allow_html=True
+)
+
 # ==========================================================
 # HEADER
 # ==========================================================
