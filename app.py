@@ -19,7 +19,7 @@ st.set_page_config(
 )
 
 # ==========================================================
-# MINERAL COLOR MAP (dipakai untuk styling dinamis)
+# MINERAL COLOR MAP
 # ==========================================================
 
 MINERAL_STYLE = {
@@ -56,8 +56,11 @@ Mineral Classification System
 </div>
 
 <div class="sub-title">
-Deep Learning Based Mineral Identification
-Using Convolutional Neural Network
+Deep Learning Based Mineral Identification · CNN Architecture
+</div>
+
+<div class="class-dots">
+<span></span><span></span><span></span><span></span><span></span>
 </div>
 """,
     unsafe_allow_html=True
@@ -70,32 +73,16 @@ Using Convolutional Neural Network
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-
-    st.metric(
-        "Model",
-        "CNN"
-    )
+    st.metric("Model", "CNN")
 
 with col2:
-
-    st.metric(
-        "Classes",
-        "5"
-    )
+    st.metric("Classes", "5")
 
 with col3:
-
-    st.metric(
-        "Input Size",
-        "224 × 224"
-    )
+    st.metric("Input Size", "224 × 224")
 
 with col4:
-
-    st.metric(
-        "Framework",
-        "TensorFlow Lite"
-    )
+    st.metric("Framework", "TensorFlow Lite")
 
 st.divider()
 
@@ -105,9 +92,7 @@ st.divider()
 
 st.markdown(
     """
-<div class="section-title">
-Upload Mineral Image
-</div>
+<div class="section-title">Upload Mineral Image</div>
 
 <p class="upload-text">
 Drag & Drop an image here or click to browse
@@ -132,17 +117,15 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 if uploaded_file is not None:
 
-    # Load Image
     image = Image.open(uploaded_file).convert("RGB")
 
-    # Predict (dengan indikator loading)
     loader = st.empty()
 
     loader.markdown(
         """
 <div class="mineral-loader">
-<div class="spinner"></div>
-<span>Analyzing mineral image...</span>
+<div class="scan-ring"></div>
+<span>Scanning specimen...</span>
 </div>
 """,
         unsafe_allow_html=True
@@ -154,63 +137,35 @@ if uploaded_file is not None:
 
     mineral_style = MINERAL_STYLE.get(mineral, "")
 
-    # Reference Image
-    image_path = os.path.join(
-        "assets",
-        f"{mineral.lower()}.jpg"
-    )
+    image_path = os.path.join("assets", f"{mineral.lower()}.jpg")
 
-# ==========================================================
-# IMAGE COMPARISON
-# ==========================================================
+    # ==========================================================
+    # IMAGE COMPARISON
+    # ==========================================================
 
     st.divider()
 
-    st.markdown(
-        """
-<div class="section-title">
-
-Image Comparison
-
-</div>
-""",
-        unsafe_allow_html=True
-    )
+    st.markdown('<div class="section-title">Image Comparison</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
 
     with col1:
-
         st.markdown(
-            '<div class="image-frame"><p class="image-label">Uploaded Image</p>',
+            '<div class="image-frame"><p class="image-label">Uploaded Specimen</p>',
             unsafe_allow_html=True
         )
-
-        st.image(
-            image,
-            use_container_width=True
-        )
-
+        st.image(image, use_container_width=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
     with col2:
-
         st.markdown(
-            '<div class="image-frame"><p class="image-label">Reference Image</p>',
+            '<div class="image-frame"><p class="image-label">Reference Specimen</p>',
             unsafe_allow_html=True
         )
-
         if os.path.exists(image_path):
-
-            st.image(
-                image_path,
-                use_container_width=True
-            )
-
+            st.image(image_path, use_container_width=True)
         else:
-
             st.warning("Reference image is not available.")
-
         st.markdown("</div>", unsafe_allow_html=True)
 
     # ==========================================================
@@ -219,34 +174,24 @@ Image Comparison
 
     st.divider()
 
-    st.markdown(
-        """
-<div class="section-title">
-Prediction Result
-</div>
-""",
-        unsafe_allow_html=True
-    )
+    st.markdown('<div class="section-title">Prediction Result</div>', unsafe_allow_html=True)
 
     left, right = st.columns([3, 1], gap="large")
 
-    # ----------------------------------------------------------
-    # Prediction Card (warna mengikuti jenis mineral)
-    # ----------------------------------------------------------
-
     with left:
-
         st.markdown(
             f"""
 <div class="prediction-card mineral-{mineral_style}">
 
+<div class="scan"></div>
+
+<div class="eyebrow">Classification Output</div>
+
 <h2>{mineral}</h2>
 
-<p>Predicted Mineral</p>
+<p>CNN model prediction result</p>
 
 <hr>
-
-<p>CNN Classification Result</p>
 
 <span class="confidence-badge">{confidence:.2f}% confidence</span>
 
@@ -255,39 +200,20 @@ Prediction Result
             unsafe_allow_html=True
         )
 
-    # ----------------------------------------------------------
-    # Confidence Card
-    # ----------------------------------------------------------
-
     with right:
-
-        st.metric(
-            label="Confidence",
-            value=f"{confidence:.2f}%"
-        )
+        st.metric(label="Confidence", value=f"{confidence:.2f}%")
 
         if confidence >= 95:
-            status = "Highly Confident"
-            status_class = "status-high"
-
+            status, status_class = "Highly Confident", "status-high"
         elif confidence >= 80:
-            status = "Confident"
-            status_class = "status-good"
-
+            status, status_class = "Confident", "status-good"
         elif confidence >= 60:
-            status = "Moderate"
-            status_class = "status-moderate"
-
+            status, status_class = "Moderate", "status-moderate"
         else:
-            status = "Low Confidence"
-            status_class = "status-low"
+            status, status_class = "Low Confidence", "status-low"
 
         st.markdown(
-            f"""
-<div class="status-card {status_class}">
-{status}
-</div>
-""",
+            f'<div class="status-card {status_class}">{status}</div>',
             unsafe_allow_html=True
         )
 
@@ -299,41 +225,17 @@ Prediction Result
 
     st.divider()
 
-    st.markdown(
-        """
-<div class="section-title">
-Classification Probability
-</div>
-""",
-        unsafe_allow_html=True
-    )
+    st.markdown('<div class="section-title">Classification Probability</div>', unsafe_allow_html=True)
 
-    class_names = [
-        "Azurite",
-        "Copper",
-        "Hematite",
-        "Malachite",
-        "Pyrite"
-    ]
+    class_names = ["Azurite", "Copper", "Hematite", "Malachite", "Pyrite"]
 
     df = pd.DataFrame({
-
         "Mineral": class_names,
-
         "Probability (%)": prediction * 100
-
     })
 
     df["Probability (%)"] = df["Probability (%)"].round(2)
-
-    df = df.sort_values(
-        by="Probability (%)",
-        ascending=False
-    )
-
-    # ----------------------------------------------------------
-    # Probability Distribution (dengan swatch warna tiap mineral)
-    # ----------------------------------------------------------
+    df = df.sort_values(by="Probability (%)", ascending=False)
 
     st.markdown("### Probability Distribution")
 
@@ -342,151 +244,78 @@ Classification Probability
     for _, row in df.iterrows():
 
         col_left, col_right = st.columns([5, 1])
-
         is_top = row["Mineral"] == top_mineral
         swatch = MINERAL_STYLE.get(row["Mineral"], "")
 
         with col_left:
-
             badge = " <span class='top-badge'>Top Match</span>" if is_top else ""
-
             st.markdown(
                 f"<span class='mineral-swatch swatch-{swatch}'></span>"
                 f"**{row['Mineral']}**{badge}",
                 unsafe_allow_html=True
             )
-
-            st.progress(
-                row["Probability (%)"] / 100
-            )
+            st.progress(row["Probability (%)"] / 100)
 
         with col_right:
-
-            st.markdown(
-                f"**{row['Probability (%)']:.2f}%**"
-            )
-
-    # ----------------------------------------------------------
-    # Visualization
-    # ----------------------------------------------------------
+            st.markdown(f"<span class='data-mono'>{row['Probability (%)']:.2f}%</span>", unsafe_allow_html=True)
 
     st.markdown("### Visualization")
 
-    st.bar_chart(
-        df.set_index("Mineral"),
-        use_container_width=True
-    )
-
-    # ----------------------------------------------------------
-    # Detailed Result
-    # ----------------------------------------------------------
+    st.bar_chart(df.set_index("Mineral"), use_container_width=True)
 
     st.markdown("### Detailed Result")
 
-    st.dataframe(
-        df,
-        use_container_width=True,
-        hide_index=True
-    )
+    st.dataframe(df, use_container_width=True, hide_index=True)
+
     # ==========================================================
     # MINERAL INFORMATION
     # ==========================================================
 
     st.divider()
 
-    st.markdown(
-        """
-<div class="section-title">
-Mineral Information
-</div>
-""",
-        unsafe_allow_html=True
-    )
+    st.markdown('<div class="section-title">Mineral Information</div>', unsafe_allow_html=True)
 
     info = MINERAL_INFO[mineral]
 
     left, right = st.columns(2)
 
-    # ----------------------------------------------------------
-    # General Information
-    # ----------------------------------------------------------
-
     with left:
-
         st.markdown(
-            """
-<div class="info-card">
-<h3>General Information</h3>
-""",
+            '<div class="info-card"><h3>General Information</h3>',
             unsafe_allow_html=True
         )
-
-        st.markdown(f"**Chemical Formula**  \n{info['formula']}")
+        st.markdown(f"**Chemical Formula**  \n<span class='data-mono'>{info['formula']}</span>", unsafe_allow_html=True)
         st.markdown(f"**Color**  \n{info['color']}")
-        st.markdown(f"**Hardness**  \n{info['hardness']}")
-
+        st.markdown(f"**Hardness**  \n<span class='data-mono'>{info['hardness']}</span>", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
-    # ----------------------------------------------------------
-    # Producing Countries
-    # ----------------------------------------------------------
-
     with right:
-
         st.markdown(
-            """
-<div class="info-card">
-<h3>Producing Countries</h3>
-""",
+            '<div class="info-card"><h3>Producing Countries</h3>',
             unsafe_allow_html=True
         )
-
         for country in info["source"]:
             st.markdown(f"• {country}")
-
         st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("---")
-
-    # ----------------------------------------------------------
-    # Description
-    # ----------------------------------------------------------
 
     st.markdown("### Description")
 
     st.markdown(
-        f"""
-<div class="description-card">
-{info['description']}
-</div>
-""",
+        f'<div class="description-card">{info["description"]}</div>',
         unsafe_allow_html=True
     )
 
     st.markdown("---")
-
-    # ----------------------------------------------------------
-    # Uses
-    # ----------------------------------------------------------
 
     st.markdown("### Berguna untuk")
 
     use_cols = st.columns(len(info["uses"]))
 
     for col, item in zip(use_cols, info["uses"]):
-
         with col:
-
-            st.markdown(
-                f"""
-<div class="use-card">
-
-{item}
-
-</div>
-""",
-                unsafe_allow_html=True
-            )
+            st.markdown(f'<div class="use-card">{item}</div>', unsafe_allow_html=True)
 
     # ==========================================================
     # DOWNLOAD REPORT
@@ -542,14 +371,9 @@ else:
     st.markdown(
         """
 <div class="upload-box">
-
+<div class="crystal"></div>
 <h2>Upload a Mineral Image</h2>
-
-<p>
-Supported formats:
-JPG • JPEG • PNG
-</p>
-
+<p>Supported formats: JPG · JPEG · PNG</p>
 </div>
 """,
         unsafe_allow_html=True
@@ -560,11 +384,7 @@ st.markdown("---")
 st.markdown(
     """
 <div class="footer">
-
-Mineral Classification System
-
-Universitas Gunadarma 
-
+Mineral Classification System — Universitas Gunadarma
 </div>
 """,
     unsafe_allow_html=True
