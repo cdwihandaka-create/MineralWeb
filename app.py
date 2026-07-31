@@ -13,7 +13,7 @@ from data.mineral_info import MINERAL_INFO
 # ==========================================================
 
 st.set_page_config(
-    page_title="Mineral Classification System",
+    page_title="Sistem Klasifikasi Mineral",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -51,14 +51,14 @@ if os.path.exists(css_path):
 
 st.markdown(
     """
-<div class="overline">Geological Specimen Analysis</div>
+<div class="overline">Analisis Spesimen Geologi</div>
 
 <div class="main-title">
-Mineral Classification System
+Sistem Klasifikasi Mineral
 </div>
 
 <div class="sub-title">
-Deep Learning Based Mineral Identification · CNN Architecture
+Identifikasi Mineral Berbasis Deep Learning · Arsitektur CNN
 </div>
 
 <div class="class-dots">
@@ -78,10 +78,10 @@ with col1:
     st.metric("Model", "CNN")
 
 with col2:
-    st.metric("Classes", "5")
+    st.metric("Kelas", "5")
 
 with col3:
-    st.metric("Input Size", "224 × 224")
+    st.metric("Ukuran Input", "224 × 224")
 
 with col4:
     st.metric("Framework", "TensorFlow Lite")
@@ -94,10 +94,10 @@ st.divider()
 
 st.markdown(
     """
-<div class="section-title">Upload Mineral Image</div>
+<div class="section-title">Unggah Gambar Mineral</div>
 
 <p class="upload-text">
-Drag & Drop an image here or click to browse
+Seret & lepas gambar di sini, atau klik untuk memilih file
 </p>
 """,
     unsafe_allow_html=True
@@ -127,7 +127,7 @@ if uploaded_file is not None:
         """
 <div class="mineral-loader">
 <div class="scan-ring"></div>
-<span>Scanning specimen...</span>
+<span>Menganalisis spesimen...</span>
 </div>
 """,
         unsafe_allow_html=True
@@ -147,13 +147,13 @@ if uploaded_file is not None:
 
     st.divider()
 
-    st.markdown('<div class="section-title">Image Comparison</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Perbandingan Gambar</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
 
     with col1:
         st.markdown(
-            '<div class="image-frame"><p class="image-label">Uploaded Specimen</p>',
+            '<div class="image-frame"><p class="image-label">Gambar Diunggah</p>',
             unsafe_allow_html=True
         )
         st.image(image, use_container_width=True)
@@ -161,13 +161,13 @@ if uploaded_file is not None:
 
     with col2:
         st.markdown(
-            '<div class="image-frame"><p class="image-label">Reference Specimen</p>',
+            '<div class="image-frame"><p class="image-label">Gambar Referensi</p>',
             unsafe_allow_html=True
         )
         if os.path.exists(image_path):
             st.image(image_path, use_container_width=True)
         else:
-            st.warning("Reference image is not available.")
+            st.warning("Gambar referensi tidak tersedia.")
         st.markdown("</div>", unsafe_allow_html=True)
 
     # ==========================================================
@@ -176,7 +176,7 @@ if uploaded_file is not None:
 
     st.divider()
 
-    st.markdown('<div class="section-title">Prediction Result</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Hasil Prediksi</div>', unsafe_allow_html=True)
 
     left, right = st.columns([3, 1], gap="large")
 
@@ -187,15 +187,15 @@ if uploaded_file is not None:
 
 <div class="scan"></div>
 
-<div class="eyebrow">Classification Output</div>
+<div class="eyebrow">Hasil Klasifikasi</div>
 
 <h2>{mineral}</h2>
 
-<p>CNN model prediction result</p>
+<p>Hasil prediksi model CNN</p>
 
 <hr>
 
-<span class="confidence-badge">{confidence:.2f}% confidence</span>
+<span class="confidence-badge">Tingkat keyakinan {confidence:.2f}%</span>
 
 </div>
 """,
@@ -203,16 +203,16 @@ if uploaded_file is not None:
         )
 
     with right:
-        st.metric(label="Confidence", value=f"{confidence:.2f}%")
+        st.metric(label="Tingkat Keyakinan", value=f"{confidence:.2f}%")
 
         if confidence >= 95:
-            status, status_class = "Highly Confident", "status-high"
+            status, status_class = "Sangat Yakin", "status-high"
         elif confidence >= 80:
-            status, status_class = "Confident", "status-good"
+            status, status_class = "Yakin", "status-good"
         elif confidence >= 60:
-            status, status_class = "Moderate", "status-moderate"
+            status, status_class = "Cukup Yakin", "status-moderate"
         else:
-            status, status_class = "Low Confidence", "status-low"
+            status, status_class = "Kurang Yakin", "status-low"
 
         st.markdown(
             f'<div class="status-card {status_class}">{status}</div>',
@@ -227,19 +227,19 @@ if uploaded_file is not None:
 
     st.divider()
 
-    st.markdown('<div class="section-title">Classification Probability</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Probabilitas Klasifikasi</div>', unsafe_allow_html=True)
 
     class_names = ["Azurite", "Copper", "Hematite", "Malachite", "Pyrite"]
 
     df = pd.DataFrame({
         "Mineral": class_names,
-        "Probability (%)": prediction * 100
+        "Probabilitas (%)": prediction * 100
     })
 
-    df["Probability (%)"] = df["Probability (%)"].round(2)
-    df = df.sort_values(by="Probability (%)", ascending=False)
+    df["Probabilitas (%)"] = df["Probabilitas (%)"].round(2)
+    df = df.sort_values(by="Probabilitas (%)", ascending=False)
 
-    st.markdown("### Probability Distribution")
+    st.markdown("### Distribusi Probabilitas")
 
     top_mineral = df.iloc[0]["Mineral"]
 
@@ -250,22 +250,22 @@ if uploaded_file is not None:
         swatch = MINERAL_STYLE.get(row["Mineral"], "")
 
         with col_left:
-            badge = " <span class='top-badge'>Top Match</span>" if is_top else ""
+            badge = " <span class='top-badge'>Paling Cocok</span>" if is_top else ""
             st.markdown(
                 f"<span class='mineral-swatch swatch-{swatch}'></span>"
                 f"**{row['Mineral']}**{badge}",
                 unsafe_allow_html=True
             )
-            st.progress(row["Probability (%)"] / 100)
+            st.progress(row["Probabilitas (%)"] / 100)
 
         with col_right:
-            st.markdown(f"<span class='data-mono'>{row['Probability (%)']:.2f}%</span>", unsafe_allow_html=True)
+            st.markdown(f"<span class='data-mono'>{row['Probabilitas (%)']:.2f}%</span>", unsafe_allow_html=True)
 
-    st.markdown("### Visualization")
+    st.markdown("### Visualisasi")
 
     st.bar_chart(df.set_index("Mineral"), use_container_width=True)
 
-    st.markdown("### Detailed Result")
+    st.markdown("### Hasil Detail")
 
     st.dataframe(df, use_container_width=True, hide_index=True)
 
@@ -275,7 +275,7 @@ if uploaded_file is not None:
 
     st.divider()
 
-    st.markdown('<div class="section-title">Mineral Information</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Informasi Mineral</div>', unsafe_allow_html=True)
 
     info = MINERAL_INFO[mineral]
 
@@ -283,17 +283,17 @@ if uploaded_file is not None:
 
     with left:
         st.markdown(
-            '<div class="info-card"><h3>General Information</h3>',
+            '<div class="info-card"><h3>Informasi Umum</h3>',
             unsafe_allow_html=True
         )
-        st.markdown(f"**Chemical Formula**  \n<span class='data-mono'>{info['formula']}</span>", unsafe_allow_html=True)
-        st.markdown(f"**Color**  \n{info['color']}")
-        st.markdown(f"**Hardness**  \n<span class='data-mono'>{info['hardness']}</span>", unsafe_allow_html=True)
+        st.markdown(f"**Rumus Kimia**  \n<span class='data-mono'>{info['formula']}</span>", unsafe_allow_html=True)
+        st.markdown(f"**Warna**  \n{info['color']}")
+        st.markdown(f"**Tingkat Kekerasan**  \n<span class='data-mono'>{info['hardness']}</span>", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
     with right:
         st.markdown(
-            '<div class="info-card"><h3>Producing Countries</h3>',
+            '<div class="info-card"><h3>Negara Penghasil</h3>',
             unsafe_allow_html=True
         )
         for country in info["source"]:
@@ -302,7 +302,7 @@ if uploaded_file is not None:
 
     st.markdown("---")
 
-    st.markdown("### Description")
+    st.markdown("### Deskripsi")
 
     st.markdown(
         f'<div class="description-card">{info["description"]}</div>',
@@ -326,40 +326,40 @@ if uploaded_file is not None:
     st.divider()
 
     result = f"""
-MINERAL CLASSIFICATION SYSTEM
+SISTEM KLASIFIKASI MINERAL
 
-Prediction Date:
+Tanggal Prediksi:
 {datetime.now().strftime("%d-%m-%Y %H:%M:%S")}
 
-Predicted Mineral:
+Mineral Terprediksi:
 {mineral}
 
-Confidence:
+Tingkat Keyakinan:
 {confidence:.2f}%
 
-Chemical Formula:
+Rumus Kimia:
 {info['formula']}
 
-Color:
+Warna:
 {info['color']}
 
-Hardness:
+Tingkat Kekerasan:
 {info['hardness']}
 
-Description:
+Deskripsi:
 {info['description']}
 
-Producing Countries:
+Negara Penghasil:
 {', '.join(info['source'])}
 
-Uses:
+Kegunaan:
 {', '.join(info['uses'])}
 """
 
     st.download_button(
-        label="Download Prediction Report",
+        label="Unduh Laporan Prediksi",
         data=result,
-        file_name=f"Prediction_Report_{mineral}.txt",
+        file_name=f"Laporan_Prediksi_{mineral}.txt",
         mime="text/plain",
         use_container_width=True
     )
@@ -374,8 +374,8 @@ else:
         """
 <div class="upload-box">
 <div class="crystal"></div>
-<h2>Upload a Mineral Image</h2>
-<p>Supported formats: JPG · JPEG · PNG</p>
+<h2>Unggah Gambar Mineral</h2>
+<p>Format yang didukung: JPG · JPEG · PNG</p>
 </div>
 """,
         unsafe_allow_html=True
@@ -386,7 +386,7 @@ st.markdown("---")
 st.markdown(
     """
 <div class="footer">
-Mineral Classification System — Universitas Gunadarma
+Sistem Klasifikasi Mineral — Universitas Gunadarma
 </div>
 """,
     unsafe_allow_html=True
