@@ -55,7 +55,11 @@
 html, body, [class*="css"]{
     font-family:"Inter", sans-serif;
     color:var(--text-2);
-    background:var(--bg-0);
+    background-color:var(--bg-0);
+    background-image:
+        linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+    background-size:46px 46px;
 }
 
 body::before{
@@ -81,10 +85,57 @@ body::after{
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
+.facet-field{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    overflow:hidden;
+}
+
+.facet-field span{
+    position:absolute;
+    width:26px;
+    height:26px;
+    border:1px solid rgba(255,255,255,.06);
+    transform:rotate(45deg);
+}
+
+.facet-field span::before{
+    content:"";
+    position:absolute;
+    inset:5px;
+    border:1px solid rgba(255,255,255,.05);
+}
+
+.facet-field span:nth-child(1){ top:8%;  left:6%;  width:40px; height:40px; border-color:rgba(91,140,255,.10); }
+.facet-field span:nth-child(2){ top:18%; right:9%; width:22px; height:22px; border-color:rgba(217,177,104,.14); }
+.facet-field span:nth-child(3){ top:42%; left:3%;  width:16px; height:16px; border-color:rgba(75,201,141,.12); }
+.facet-field span:nth-child(4){ top:65%; right:5%; width:34px; height:34px; border-color:rgba(229,102,92,.10); }
+.facet-field span:nth-child(5){ top:80%; left:14%; width:20px; height:20px; border-color:rgba(233,198,101,.12); }
+.facet-field span:nth-child(6){ top:30%; left:48%;  width:14px; height:14px; border-color:rgba(255,255,255,.05); }
+.facet-field span:nth-child(7){ top:88%; right:32%; width:28px; height:28px; border-color:rgba(91,140,255,.08); }
+
 @keyframes ambientDrift{
     0%,100%{ opacity:1; transform:translateY(0) scale(1); }
     50%{ opacity:.75; transform:translateY(-14px) scale(1.03); }
 }
+
+@keyframes facetFloat{
+    0%,100%{ transform:rotate(45deg) translateY(0); }
+    50%{ transform:rotate(45deg) translateY(-10px); }
+}
+
+.facet-field span{
+    animation:facetFloat 7s ease-in-out infinite;
+}
+
+.facet-field span:nth-child(2){ animation-delay:1s; }
+.facet-field span:nth-child(3){ animation-delay:2s; }
+.facet-field span:nth-child(4){ animation-delay:.5s; }
+.facet-field span:nth-child(5){ animation-delay:1.6s; }
+.facet-field span:nth-child(6){ animation-delay:2.4s; }
+.facet-field span:nth-child(7){ animation-delay:.9s; }
 
 .block-container{
     max-width:1180px;
