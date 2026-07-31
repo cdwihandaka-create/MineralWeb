@@ -48,7 +48,12 @@ if os.path.exists(css_path):
 st.markdown(
     """
 <div class="facet-field">
+<div class="glow-orb orb-azurite"></div>
+<div class="glow-orb orb-gold"></div>
+<div class="glow-orb orb-malachite"></div>
 <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+<span class="twinkle"></span><span class="twinkle"></span><span class="twinkle"></span>
+<span class="twinkle"></span><span class="twinkle"></span><span class="twinkle"></span>
 </div>
 """,
     unsafe_allow_html=True
