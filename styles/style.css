@@ -473,6 +473,59 @@ button, .stButton>button, .stDownloadButton>button,
 }
 
 /* ==========================================================
+   SUPPORTED CLASSES GRID
+   ========================================================== */
+
+.class-card{
+    position:relative;
+    background:var(--surface);
+    backdrop-filter:blur(12px);
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    padding:8px;
+    text-align:center;
+    transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.class-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--border-strong);
+}
+
+.class-card img{
+    border-radius:calc(var(--radius-lg) - 6px);
+    margin-bottom:2px;
+}
+
+.class-card-body{
+    padding:10px 6px 6px;
+}
+
+.class-card .class-name{
+    display:block;
+    font-family:"Playfair Display", serif;
+    font-weight:700;
+    font-size:14.5px;
+    color:var(--text-1);
+    margin-top:6px;
+}
+
+.class-card .class-formula{
+    font-family:"JetBrains Mono", monospace;
+    font-size:11px;
+    color:var(--text-3);
+    margin-top:3px;
+    letter-spacing:.3px;
+}
+
+.class-card.class-azurite:hover{ box-shadow:0 0 22px var(--azurite-glow); }
+.class-card.class-copper:hover{ box-shadow:0 0 22px var(--copper-glow); }
+.class-card.class-hematite:hover{ box-shadow:0 0 22px var(--hematite-glow); }
+.class-card.class-malachite:hover{ box-shadow:0 0 22px var(--malachite-glow); }
+.class-card.class-pyrite:hover{ box-shadow:0 0 22px var(--pyrite-glow); }
+
+/* ==========================================================
    UPLOAD AREA
    ========================================================== */
 
@@ -1117,4 +1170,6 @@ hr::after{
     .sub-title{ font-size:12.5px; padding:0 10px; }
     .prediction-card h2{ font-size:26px; }
     .prediction-card{ padding:24px; }
+    .class-card .class-name{ font-size:12px; }
+    .class-card .class-formula{ font-size:9.5px; }
 }
