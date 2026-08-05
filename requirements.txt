@@ -6,3 +6,4 @@ Pillow
 matplotlib
 opencv-python-headless
 scikit-image
+starlette<0.48
