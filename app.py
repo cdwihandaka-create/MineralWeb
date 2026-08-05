@@ -109,6 +109,45 @@ with col4:
 st.divider()
 
 # ==========================================================
+# SUPPORTED MINERAL CLASSES
+# ==========================================================
+
+st.markdown('<div class="section-title">Mineral yang Dapat Diklasifikasikan</div>', unsafe_allow_html=True)
+
+st.markdown(
+    '<p class="upload-text">Sistem ini dilatih untuk mengenali 5 jenis mineral berikut</p>',
+    unsafe_allow_html=True
+)
+
+class_order = ["Azurite", "Copper", "Hematite", "Malachite", "Pyrite"]
+class_cols = st.columns(5)
+
+for col, mineral_name in zip(class_cols, class_order):
+    style = MINERAL_STYLE.get(mineral_name, "")
+    info = MINERAL_INFO.get(mineral_name, {})
+    thumb_path = os.path.join("assets", f"{mineral_name.lower()}.jpg")
+
+    with col:
+        st.markdown(f'<div class="class-card class-{style}">', unsafe_allow_html=True)
+
+        if os.path.exists(thumb_path):
+            st.image(thumb_path, use_container_width=True)
+
+        st.markdown(
+            f"""
+<div class="class-card-body">
+<span class="mineral-swatch swatch-{style}"></span>
+<span class="class-name">{mineral_name}</span>
+<div class="class-formula">{info.get('formula', '')}</div>
+</div>
+</div>
+""",
+            unsafe_allow_html=True
+        )
+
+st.divider()
+
+# ==========================================================
 # IMAGE UPLOAD
 # ==========================================================
 
