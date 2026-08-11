@@ -5,7 +5,7 @@ import pandas as pd
 import streamlit as st
 from PIL import Image
 
-from utils.predict import predict_image
+from utils.predict import predict_v1, predict_fusion
 from data.mineral_info import MINERAL_INFO
 
 # ==========================================================
@@ -192,7 +192,8 @@ if uploaded_file is not None:
         unsafe_allow_html=True
     )
 
-    mineral, confidence, prediction = predict_image(image)
+    mineral, confidence, prediction = predict_v1(image)
+    mineral_fusion, confidence_fusion, prediction_fusion = predict_fusion(image)
 
     loader.empty()
 
@@ -437,6 +438,40 @@ if uploaded_file is not None:
     st.markdown("### Hasil Detail")
 
     st.dataframe(df, use_container_width=True, hide_index=True)
+
+    # ==========================================================
+    # PERBANDINGAN DENGAN MODEL FUSION
+    # ==========================================================
+
+    st.divider()
+
+    st.markdown('<div class="section-title">Perbandingan dengan MineralCNN_Fusion</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<p class="upload-text">Prediksi model kedua (CNN + fitur warna HSV + fitur tekstur LBP) sebagai pembanding</p>',
+        unsafe_allow_html=True
+    )
+
+    col_v1, col_fusion = st.columns(2)
+
+    with col_v1:
+        st.markdown("#### MineralCNN_V1")
+        st.metric(label="Prediksi", value=mineral)
+        st.metric(label="Confidence", value=f"{confidence:.2f}%")
+
+    with col_fusion:
+        st.markdown("#### MineralCNN_Fusion")
+        st.metric(label="Prediksi", value=mineral_fusion)
+        st.metric(label="Confidence", value=f"{confidence_fusion:.2f}%")
+
+    df_fusion = pd.DataFrame({
+        "Mineral": class_names,
+        "Probabilitas (%)": prediction_fusion * 100
+    })
+    df_fusion["Probabilitas (%)"] = df_fusion["Probabilitas (%)"].round(2)
+    df_fusion = df_fusion.sort_values(by="Probabilitas (%)", ascending=False)
+
+    st.markdown("##### Distribusi Probabilitas — MineralCNN_Fusion")
+    st.bar_chart(df_fusion.set_index("Mineral"), use_container_width=True)
 
     # ==========================================================
     # MINERAL INFORMATION
